@@ -16,6 +16,10 @@ app = Flask(__name__)
 def index():
     return render_template('./aquarium/aquarium.html')
 
+@app.route("/twowindow")
+def twowindow():
+    return render_template('./aquarium/aquarium_twowindow.html')
+
 @app.route("/iframe")
 def iframe():
     return render_template('./aquarium/load.html')
@@ -29,8 +33,8 @@ def server_test():
     now = time.strftime("%Y-%m-%d-%H_%M_%S",time.localtime(time.time())) 
     fname = "/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Youtube/cache/" + now +r".csv"
     csvFile = open(fname,'wb')
-    writer = csv.writer(csvFile)
-    writer.writerows([data1,data2,data3,data4])
+    # writer = csv.writer(csvFile)
+    # writer.writerows([data1,data2,data3,data4])
     csvFile.close()
 
     s1 = list(map(float, data1))
@@ -51,7 +55,35 @@ def server_test():
     axs.grid(True)
     plt.legend(('First Time(D)', 'Second Time', 'Third Time', 'Fourth Time'),loc='upper right')
     fig.tight_layout()
-    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Youtube/cache/" + now +r".png")
+    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Twowindow/" + now +r".png")
+
+
+    return jsonify(otstr=[1,2,3,4,5,6,7])
+
+
+
+
+@app.route('/server_test_twowindow',methods=['POST'])
+def server_test_twowindow():
+    data1 = request.form.getlist('post_data1[]')
+    now = time.strftime("%Y-%m-%d-%H_%M_%S",time.localtime(time.time())) 
+    fname = "/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Twowindow/" + now +r".csv"
+    csvFile = open(fname,'wb')
+    writer = csv.writer(csvFile)
+    writer.writerows([data1])
+    csvFile.close()
+
+    s1 = list(map(float, data1))
+    t1 = range(len(s1))
+
+    fig, axs = plt.subplots()
+    axs.plot(t1, s1)
+    axs.set_xlabel('Frame')
+    axs.set_ylabel('Render Time')
+    axs.grid(True)
+    plt.legend(('First Time'),loc='upper right')
+    fig.tight_layout()
+    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Twowindow/" + now +r".png")
 
 
     return jsonify(otstr=[1,2,3,4,5,6,7])
