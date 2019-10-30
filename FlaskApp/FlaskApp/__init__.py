@@ -33,8 +33,8 @@ def server_test():
     now = time.strftime("%Y-%m-%d-%H_%M_%S",time.localtime(time.time())) 
     fname = "/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Youtube/cache/" + now +r".csv"
     csvFile = open(fname,'wb')
-    # writer = csv.writer(csvFile)
-    # writer.writerows([data1,data2,data3,data4])
+    writer = csv.writer(csvFile)
+    writer.writerows([data1,data2,data3,data4])
     csvFile.close()
 
     s1 = list(map(float, data1))
@@ -55,7 +55,7 @@ def server_test():
     axs.grid(True)
     plt.legend(('First Time(D)', 'Second Time', 'Third Time', 'Fourth Time'),loc='upper right')
     fig.tight_layout()
-    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Twowindow/" + now +r".png")
+    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Youtube/cache/" + now +r".png")
 
 
     return jsonify(otstr=[1,2,3,4,5,6,7])
