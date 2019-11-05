@@ -31,7 +31,7 @@ def server_test():
     data3 = request.form.getlist('post_data3[]')
     data4 = request.form.getlist('post_data4[]')
     now = time.strftime("%Y-%m-%d-%H_%M_%S",time.localtime(time.time())) 
-    fname = "/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Youtube/cache/" + now +r".csv"
+    fname = "/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/360/cache/" + now +r".csv"
     csvFile = open(fname,'wb')
     writer = csv.writer(csvFile)
     writer.writerows([data1,data2,data3,data4])
@@ -55,13 +55,13 @@ def server_test():
     axs.grid(True)
     plt.legend(('First Time(D)', 'Second Time', 'Third Time', 'Fourth Time'),loc='upper right')
     fig.tight_layout()
-    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Youtube/cache/" + now +r".png")
+    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/360/cache/" + now +r".png")
 
 
     return jsonify(otstr=[1,2,3,4,5,6,7])
 
 
-
+'''
 
 @app.route('/server_test_twowindow',methods=['POST'])
 def server_test_twowindow():
@@ -87,6 +87,8 @@ def server_test_twowindow():
 
 
     return jsonify(otstr=[1,2,3,4,5,6,7])
+'''
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug = True)

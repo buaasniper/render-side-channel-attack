@@ -1807,26 +1807,26 @@ function initialize() {
     /**********************************************************************************************/
     //change the link
     if (frameCount == startframe){
-      iframeelement1.src = "http://www.youtube.com";
+      iframeelement1.src = "https://www.360.cn/";
     }
     if (frameCount == startframe + courtframe - 10){
       iframeelement1.parentNode.removeChild(iframeelement1);
     }
     if (frameCount == startframe + courtframe){
     // console.log(iframeelement);
-      iframeelement2.src = "http://www.youtube.com";
+      iframeelement2.src = "https://www.360.cn/";
     }
     if (frameCount == startframe + courtframe * 2 - 10){
       iframeelement2.parentNode.removeChild(iframeelement2);
     }
     if (frameCount == startframe + courtframe * 2){  
-      iframeelement3.src = "http://www.youtube.com";
+      iframeelement3.src = "https://www.360.cn/";
     }
     if (frameCount == startframe + courtframe * 3 - 10){
       iframeelement3.parentNode.removeChild(iframeelement3);
     }
     if (frameCount == startframe + courtframe * 3){  
-      iframeelement4.src = "http://www.youtube.com";
+      iframeelement4.src = "https://www.360.cn/";
     }
 
     /**********************************************************************************************/
