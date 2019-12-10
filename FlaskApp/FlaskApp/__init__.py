@@ -31,7 +31,7 @@ def server_test():
     data3 = request.form.getlist('post_data3[]')
     data4 = request.form.getlist('post_data4[]')
     now = time.strftime("%Y-%m-%d-%H_%M_%S",time.localtime(time.time())) 
-    fname = "/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/360/cache/" + now +r".csv"
+    fname = "/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Test/" + now +r".csv"
     csvFile = open(fname,'wb')
     writer = csv.writer(csvFile)
     writer.writerows([data1,data2,data3,data4])
@@ -55,40 +55,41 @@ def server_test():
     axs.grid(True)
     plt.legend(('First Time(D)', 'Second Time', 'Third Time', 'Fourth Time'),loc='upper right')
     fig.tight_layout()
-    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/360/cache/" + now +r".png")
+    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Test/" + now +r".png")
 
 
     return jsonify(otstr=[1,2,3,4,5,6,7])
 
 
-'''
 
-@app.route('/server_test_twowindow',methods=['POST'])
-def server_test_twowindow():
-    data1 = request.form.getlist('post_data1[]')
-    now = time.strftime("%Y-%m-%d-%H_%M_%S",time.localtime(time.time())) 
-    fname = "/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Twowindow/" + now +r".csv"
-    csvFile = open(fname,'wb')
-    writer = csv.writer(csvFile)
-    writer.writerows([data1])
-    csvFile.close()
+# input bandwidth  output array
+@app.route('/control_bandwidth',methods=['POST'])
+def control_bandwidth():
+    bandwidth = request.form.get('post_data1')
+    returnlist = np.random.rand(10000 * int(bandwidth)).tolist()
+    return jsonify(otstr=returnlist)
 
-    s1 = list(map(float, data1))
-    t1 = range(len(s1))
+# input bandwidth  output array
+@app.route('/control_bandwidth1',methods=['POST'])
+def control_bandwidth1():
+    bandwidth = request.form.get('post_data1')
+    returnlist = np.random.rand(10000 * int(bandwidth)).tolist()
+    return jsonify(otstr=returnlist)
 
-    fig, axs = plt.subplots()
-    axs.plot(t1, s1)
-    axs.set_xlabel('Frame')
-    axs.set_ylabel('Render Time')
-    axs.grid(True)
-    plt.legend(('First Time'),loc='upper right')
-    fig.tight_layout()
-    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Twowindow/" + now +r".png")
+# input bandwidth  output array
+@app.route('/control_bandwidth2',methods=['POST'])
+def control_bandwidth2():
+    bandwidth = request.form.get('post_data1')
+    returnlist = np.random.rand(10000 * int(bandwidth)).tolist()
+    return jsonify(otstr=returnlist)
 
-
-    return jsonify(otstr=[1,2,3,4,5,6,7])
-'''
+# input bandwidth  output array
+@app.route('/control_bandwidth3',methods=['POST'])
+def control_bandwidth3():
+    bandwidth = request.form.get('post_data1')
+    returnlist = np.random.rand(10000 * int(bandwidth)).tolist()
+    return jsonify(otstr=returnlist)
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug = True)
+    app.run(host='0.0.0.0', debug = True) 

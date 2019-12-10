@@ -31,8 +31,7 @@ function useMultiviewForStereo() {
 }
 
 // globals
-var time_300;
-var time_onload;
+var onload_flag = 0;      // decide whether iframe onload
 var gl;                   // the gl context.
 var multiview;            // multiview extension.
 var canvas;               // the canvas
@@ -47,7 +46,7 @@ var g_scenes = {};  // each of the models
 var g_sceneGroups = {};  // the placement of the models
 var g_fog = true;
 //yujianjia
-var g_numFish = [1, 100, 15000, 1000, 15000, 10000, 15000, 20000, 25000, 30000];
+var g_numFish = [1, 10, 15000, 15000, 15000, 10000, 15000, 20000, 25000, 30000];
 
 var g_stereoDemoActive = false;
 var g_shadersNeedUpdate = false; // Set to true whenever the state has changed so that shaders may need to be changed.
@@ -1734,6 +1733,10 @@ function initialize() {
   var test_data2 = [];
   var test_data3 = [];
   var test_data4 = [];
+  var status = 0;
+  var tem_frame = 0;
+  var record_flag = 0;
+  var bandwidth = 0;
 
 
   
@@ -1796,61 +1799,155 @@ function initialize() {
     x_time = x2_time;
 
     var iframeelement1 = document.getElementById('testiframe1');
-    var iframeelement1 = document.getElementById('testiframe1');
     var iframeelement2 = document.getElementById('testiframe2');
     var iframeelement3 = document.getElementById('testiframe3');
     var iframeelement4 = document.getElementById('testiframe4');
     
-    var startframe = 500;
-    var courtframe = 100;
+
+
+    var startframe = 100;
+    var courtframe = 10;
+
+
+    //test bandwidth
+    // navigator.connection.addEventListener('change', logNetworkInfo);
+    if (frameCount == startframe - courtframe)
+      logNetworkInfo();
+    function logNetworkInfo() {
+      // Network type that browser uses
+      console.log('         type: ' + navigator.connection.type);
+
+      // Effective bandwidth estimate
+      console.log('     downlink: ' + navigator.connection.downlink + 'Mb/s');
+      bandwidth = navigator.connection.downlink;
+
+      // Effective round-trip time estimate
+      console.log('          rtt: ' + navigator.connection.rtt + 'ms');
+
+      // Upper bound on the downlink speed of the first network hop
+      console.log('  downlinkMax: ' + navigator.connection.downlinkMax + 'Mb/s');
+
+      // Effective connection type determined using a combination of recently
+      // observed rtt and downlink values: ' +
+      console.log('effectiveType: ' + navigator.connection.effectiveType);
+      
+      // True if the user has requested a reduced data usage mode from the user
+      // agent.
+      console.log('     saveData: ' + navigator.connection.saveData);
+    }
+
 
     /**********************************************************************************************/
     //change the link
+    // if (frameCount == startframe){
+    //   iframeelement1.src = "https://www.360.cn/";
+    // }
+    // if (frameCount == startframe + courtframe - 10){
+    //   iframeelement1.parentNode.removeChild(iframeelement1);
+    // }
+    // if (frameCount == startframe + courtframe){
+    //   iframeelement2.src = "https://www.360.cn/";
+    // }
+    // if (frameCount == startframe + courtframe * 2 - 10){
+    //   iframeelement2.parentNode.removeChild(iframeelement2);
+    // }
+    // if (frameCount == startframe + courtframe * 2){  
+    //   iframeelement3.src = "https://www.360.cn/";
+    // }
+    // if (frameCount == startframe + courtframe * 3 - 10){
+    //   iframeelement3.parentNode.removeChild(iframeelement3);
+    // }
+    // if (frameCount == startframe + courtframe * 3){  
+    //   iframeelement4.src = "https://www.360.cn/";
+    // }
+
+    // var iframe_link = "http://18.190.132.90/index.php?q=https%3A%2F%2Fwww.nieuwsblad.be%2F";
+    var iframe_link = "http://18.190.132.90/index.php?q=https%3A%2F%2Fwww.baidu.com";
     if (frameCount == startframe){
-      iframeelement1.src = "https://www.360.cn/";
+      iframeelement1.src = iframe_link;
+      record_flag = 1;
     }
-    if (frameCount == startframe + courtframe - 10){
-      iframeelement1.parentNode.removeChild(iframeelement1);
+    if (frameCount > startframe){
+      if ( (status == 1) && (frameCount == ( tem_frame + 20))){
+        iframeelement2.src = iframe_link;
+        record_flag = 1;
+      }
+      if ( (status == 2) && (frameCount == ( tem_frame + 20))){
+        iframeelement3.src = iframe_link;
+        record_flag = 1;
+      }
+      if ( (status == 3) && (frameCount == ( tem_frame + 20))){
+        iframeelement4.src = iframe_link;
+        record_flag = 1;
+      }
     }
-    if (frameCount == startframe + courtframe){
-    // console.log(iframeelement);
-      iframeelement2.src = "https://www.360.cn/";
+
+
+    //accroding to the loading time,cancel the iframe
+    if ((frameCount > startframe) && (onload_flag == 1)){
+      onload_flag = 0;
+      if (frameCount > startframe + 2){
+        status++;
+        tem_frame = frameCount;
+      }
+      // console.log("onload_flag",onload_flag);
+      // console.log("status",status);
+      // console.log("tem_frame",tem_frame);
+      if (status == 1){
+        // console.log("in");
+        iframeelement1.parentNode.removeChild(iframeelement1);
+        record_flag = 0;
+      }
+      if (status == 2){
+        iframeelement2.parentNode.removeChild(iframeelement2);
+        record_flag = 0;
+      }
+      if (status == 3){
+        iframeelement3.parentNode.removeChild(iframeelement3);
+        record_flag = 0;
+      }
+      if (status == 4){
+        record_flag = 0;
+      }
     }
-    if (frameCount == startframe + courtframe * 2 - 10){
-      iframeelement2.parentNode.removeChild(iframeelement2);
-    }
-    if (frameCount == startframe + courtframe * 2){  
-      iframeelement3.src = "https://www.360.cn/";
-    }
-    if (frameCount == startframe + courtframe * 3 - 10){
-      iframeelement3.parentNode.removeChild(iframeelement3);
-    }
-    if (frameCount == startframe + courtframe * 3){  
-      iframeelement4.src = "https://www.360.cn/";
-    }
+
 
     /**********************************************************************************************/
 
     /**********************************************************************************************/
     // record the data
-    if ((frameCount > startframe) && (frameCount <= (startframe + courtframe - 10))){
-      test_data1.push(Math.round(recorddata*100)/100);
+    // if ((frameCount > startframe) && (frameCount <= (startframe + courtframe - 10))){
+    //   test_data1.push(Math.round(recorddata*100)/100);
+    // }
+    // if ((frameCount > startframe + courtframe) && (frameCount <= (startframe + courtframe * 2 - 10))){
+    //   test_data2.push(Math.round(recorddata*100)/100);
+    // }
+    // if ((frameCount > startframe + courtframe * 2) && (frameCount <= (startframe + courtframe * 3 - 10))){
+    //   test_data3.push(Math.round(recorddata*100)/100);
+    // }
+    // if ((frameCount > startframe + courtframe * 3) && (frameCount <= (startframe + courtframe * 4 - 10))){
+    //   test_data4.push(Math.round(recorddata*100)/100);
+    // }
+
+    if (record_flag == 1){
+      if (status == 0)
+        test_data1.push(Math.round(recorddata*100)/100);
+      if (status == 1)
+        test_data2.push(Math.round(recorddata*100)/100);
+      if (status == 2)
+        test_data3.push(Math.round(recorddata*100)/100);
+      if (status == 3)
+        test_data4.push(Math.round(recorddata*100)/100);
     }
-    if ((frameCount > startframe + courtframe) && (frameCount <= (startframe + courtframe * 2 - 10))){
-      test_data2.push(Math.round(recorddata*100)/100);
-    }
-    if ((frameCount > startframe + courtframe * 2) && (frameCount <= (startframe + courtframe * 3 - 10))){
-      test_data3.push(Math.round(recorddata*100)/100);
-    }
-    if ((frameCount > startframe + courtframe * 3) && (frameCount <= (startframe + courtframe * 4 - 10))){
-      test_data4.push(Math.round(recorddata*100)/100);
-    }
+
+
 
 
     /**********************************************************************************************/
     //post data
         
-    if (frameCount == (startframe + courtframe * 4 - 10)){
+    if (status == 4){
+      status = 5;
       $.post("/server_test",{"post_data1":test_data1, "post_data2":test_data2,"post_data3":test_data3,"post_data4":test_data4},function(data,status)
       {
           console.log("sent");
@@ -1858,6 +1955,38 @@ function initialize() {
           console.log(data.otstr);                     
       });  
     } 
+
+    // if ((frameCount > startframe - 10) && (status < 4)) {
+    //   var time1 = performance.now()
+    //   $.post("/control_bandwidth",{"post_data1":bandwidth},function(data,status)
+    //   {
+    //       console.log("sent1");
+    //       var tmp = data;            
+    //       // console.log(performance.now() - time1);                     
+    //   });  
+
+    //   $.post("/control_bandwidth1",{"post_data1":bandwidth},function(data,status)
+    //   {
+    //       console.log("sent2");
+    //       var tmp = data;            
+    //       // console.log(performance.now() - time1);                     
+    //   }); 
+
+    //   $.post("/control_bandwidth2",{"post_data1":bandwidth},function(data,status)
+    //   {
+    //       console.log("sent3");
+    //       var tmp = data;            
+    //       // console.log(performance.now() - time1);                     
+    //   }); 
+
+    //   $.post("/control_bandwidth3",{"post_data1":bandwidth},function(data,status)
+    //   {
+    //       console.log("sent4");
+    //       var tmp = data;            
+    //       // console.log(performance.now() - time1);                     
+    //   }); 
+
+    // }
 
   
 

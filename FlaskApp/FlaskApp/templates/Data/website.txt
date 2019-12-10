@@ -1,20 +1,20 @@
-Google.com *
-Youtube.com *
-Tmall.com
-Baidu.com
-Qq.com
-Facebook.com *
-Sohu.com
-Taobao.com
-Wikipedia.org *
-Login.tmall.com
-Yahoo.com ?
-360.cn
-Jd.com
-Amazon.com *
-Sina.com.cn
-Weibo.com
-Pages.tmall.com
-Reddit.com *
+Google.com                       ------------------             (loading time can't test) （add_on can't test）
+Youtube.com *                     ------------------             (loading time can't test)  (not same page)
+Tmall.com                         100%     25       30       150
+Baidu.com                         100%     25       20       80
+Qq.com                            100%     40       --       --  (loading time can't test)
+Facebook.com *                    ------------------             (defend system)           （add_on can't test）
+Sohu.com                          80%+     350      400      400 (loading time can't test) 
+Taobao.com                        100%     30       40       180
+Wikipedia.org *                   ------------------             (loading time can't test) （add_on can't test）
+Login.tmall.com                   100%     40       50       160
+Yahoo.com ??????                  ------------------             (loading time can't test)  (add_on work)
+360.cn                            100%     20       50       250
+Jd.com                            100%     50       100      250 https://www.jd.com/?country=USA
+Amazon.com *                      ------------------             (loading time can't test) （add_on can't test）
+Sina.com.cn                       90%+     150      150      500
+Weibo.com                         100%     30       30       150
+Pages.tmall.com                   ---      --       --       ---
+Reddit.com *                      ------------------             (loading time can't test) （add_on can't test）
 Live.com *
 Vk.com *
