@@ -1841,26 +1841,28 @@ function initialize() {
     //change the link
     var iframe_line = "https://www.donedeal.ie/"; 
     if (frameCount == startframe){
-      iframeelement1.src = "https://www.bol.com/nl/";
+      console.log("show iframe");
+      iframeelement1.src = "http://18.190.132.90:8080/iframe";
+      console.log(iframeelement1);
     }
-    if (frameCount == startframe + courtframe - 10){
-      iframeelement1.parentNode.removeChild(iframeelement1);
-    }
-    if (frameCount == startframe + courtframe){
-      iframeelement2.src = "https://www.bol.com/nl/";
-    }
-    if (frameCount == startframe + courtframe * 2 - 10){
-      iframeelement2.parentNode.removeChild(iframeelement2);
-    }
-    if (frameCount == startframe + courtframe * 2){  
-      iframeelement3.src = "https://www.bol.com/nl/";
-    }
-    if (frameCount == startframe + courtframe * 3 - 10){
-      iframeelement3.parentNode.removeChild(iframeelement3);
-    }
-    if (frameCount == startframe + courtframe * 3){  
-      iframeelement4.src = "https://www.bol.com/nl/";
-    }
+    // if (frameCount == startframe + courtframe - 10){
+    //   iframeelement1.src = "http://18.190.132.90:8080/iframe";
+    // }
+    // if (frameCount == startframe + courtframe){
+    //   iframeelement2.src = iframe_line;
+    // }
+    // if (frameCount == startframe + courtframe * 2 - 10){
+    //   iframeelement2.src = "http://18.190.132.90:8080/iframe";
+    // }
+    // if (frameCount == startframe + courtframe * 2){  
+    //   iframeelement2.src = iframe_line;
+    // }
+    // if (frameCount == startframe + courtframe * 3 - 10){
+    //   iframeelement2.src = "http://18.190.132.90:8080/iframe";
+    // }
+    // if (frameCount == startframe + courtframe * 3){  
+    //   iframeelement2.src = iframe_line;
+    // }
 
     // var iframe_link = "http://18.190.132.90/index.php?q=https%3A%2F%2Fwww.nieuwsblad.be%2F";
     // var iframe_link = "http://18.190.132.90/index.php?q=https%3A%2F%2Fwww.baidu.com";
