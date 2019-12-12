@@ -1806,7 +1806,7 @@ function initialize() {
 
 
     var startframe = 500;
-    var courtframe = 300;
+    var courtframe = 100;
 
 
     //test bandwidth
@@ -1839,6 +1839,7 @@ function initialize() {
 
     /**********************************************************************************************/
     //change the link
+    var iframe_line = "https://www.donedeal.ie/"; 
     if (frameCount == startframe){
       iframeelement1.src = "https://www.bol.com/nl/";
     }

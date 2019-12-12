@@ -52,7 +52,10 @@ def server_test():
     axs.plot(t1, s1, t2, s2, t3, s3, t4, s4)
     axs.set_xlabel('Real Time')
     axs.set_ylabel('Render Time')
+
     axs.grid(True)
+    plt.vlines(40, 0, 100, colors = "c", linestyles = "dashed")
+
     plt.legend(('First Time(D)', 'Second Time', 'Third Time', 'Fourth Time'),loc='upper right')
     fig.tight_layout()
     plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Test/" + now +r".png")
