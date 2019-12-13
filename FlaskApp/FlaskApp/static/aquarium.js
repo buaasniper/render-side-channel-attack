@@ -1806,7 +1806,7 @@ function initialize() {
 
 
     var startframe = 500;
-    var courtframe = 100;
+    var courtframe = 500;
 
 
     //test bandwidth
@@ -1836,15 +1836,48 @@ function initialize() {
       console.log('     saveData: ' + navigator.connection.saveData);
     }
 
+    //try to create new iframe
+    var iframe_test;
+    var iframe_line = "https://www.360.com/"; 
+    if (frameCount == startframe){
+      iframe_test = document.createElement('iframe');
+      iframe_test.src = iframe_line;
+      document.body.appendChild(iframe_test);
+    }
+    if (frameCount == startframe + courtframe - 10){
+      console.log(iframe_test);
+      iframe_test.parentNode.removeChild(iframe_test);
+    }
+    // if (frameCount == startframe + courtframe){
+    //   iframe = document.createElement('iframe');
+    //   iframe.src = iframe_line;
+    //   document.body.appendChild(iframe);
+    // }
+    // if (frameCount == startframe + courtframe * 2 - 10){
+    //   iframe.parentNode.removeChild(iframe);
+    // }
+    // if (frameCount == startframe + courtframe * 2){  
+    //   iframe = document.createElement('iframe');
+    //   iframe.src = iframe_line;
+    //   document.body.appendChild(iframe);
+    // }
+    // if (frameCount == startframe + courtframe * 3 - 10){
+    //   iframe.parentNode.removeChild(iframe);
+    // }
+    // if (frameCount == startframe + courtframe * 3){  
+    //   iframe = document.createElement('iframe');
+    //   iframe.src = iframe_line;
+    //   document.body.appendChild(iframe);
+    // }
 
     /**********************************************************************************************/
     //change the link
-    var iframe_line = "https://www.donedeal.ie/"; 
-    if (frameCount == startframe){
-      console.log("show iframe");
-      iframeelement1.src = "http://18.190.132.90:8080/iframe";
-      console.log(iframeelement1);
-    }
+    // var iframe_line = "https://www.donedeal.ie/"; 
+    // if (frameCount == startframe){
+    //   console.log("show iframe");
+    //   iframeelement1.src = "http://18.190.132.90:8080/iframe";
+    //   console.log(iframeelement1);
+    // }
     // if (frameCount == startframe + courtframe - 10){
     //   iframeelement1.src = "http://18.190.132.90:8080/iframe";
     // }
