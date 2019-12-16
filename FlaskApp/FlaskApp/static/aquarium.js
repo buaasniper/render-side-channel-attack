@@ -1806,7 +1806,7 @@ function initialize() {
 
 
     var startframe = 200;
-    var courtframe = 200;
+    var courtframe = 100;
 
 
     //test bandwidth
@@ -1838,7 +1838,7 @@ function initialize() {
 
     //try to create new iframe
     // var iframe_test;
-    var iframe_line = "https://www.360.com/"; 
+    var iframe_line = "https://www.amazon.in/"; 
     if (frameCount == startframe){
       iframeelement1.src = iframe_line;
     }
