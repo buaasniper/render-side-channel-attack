@@ -54,7 +54,7 @@ def server_test():
     axs.set_ylabel('Render Time')
 
     axs.grid(True)
-    plt.vlines(40, 0, 100, colors = "c", linestyles = "dashed")
+    # plt.vlines(40, 0, 100, colors = "c", linestyles = "dashed")
 
     plt.legend(('First Time(D)', 'Second Time', 'Third Time', 'Fourth Time'),loc='upper right')
     fig.tight_layout()

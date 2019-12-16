@@ -1805,8 +1805,8 @@ function initialize() {
     
 
 
-    var startframe = 500;
-    var courtframe = 500;
+    var startframe = 200;
+    var courtframe = 200;
 
 
     //test bandwidth
@@ -1837,38 +1837,29 @@ function initialize() {
     }
 
     //try to create new iframe
-    var iframe_test;
+    // var iframe_test;
     var iframe_line = "https://www.360.com/"; 
     if (frameCount == startframe){
-      iframe_test = document.createElement('iframe');
-      iframe_test.src = iframe_line;
-      document.body.appendChild(iframe_test);
+      iframeelement1.src = iframe_line;
     }
     if (frameCount == startframe + courtframe - 10){
-      console.log(iframe_test);
-      iframe_test.parentNode.removeChild(iframe_test);
+      iframeelement1.parentNode.removeChild(iframeelement1);
     }
-    // if (frameCount == startframe + courtframe){
-    //   iframe = document.createElement('iframe');
-    //   iframe.src = iframe_line;
-    //   document.body.appendChild(iframe);
-    // }
-    // if (frameCount == startframe + courtframe * 2 - 10){
-    //   iframe.parentNode.removeChild(iframe);
-    // }
-    // if (frameCount == startframe + courtframe * 2){  
-    //   iframe = document.createElement('iframe');
-    //   iframe.src = iframe_line;
-    //   document.body.appendChild(iframe);
-    // }
-    // if (frameCount == startframe + courtframe * 3 - 10){
-    //   iframe.parentNode.removeChild(iframe);
-    // }
-    // if (frameCount == startframe + courtframe * 3){  
-    //   iframe = document.createElement('iframe');
-    //   iframe.src = iframe_line;
-    //   document.body.appendChild(iframe);
-    // }
+    if (frameCount == startframe + courtframe){
+      iframeelement2.src = iframe_line;
+    }
+    if (frameCount == startframe + courtframe * 2 - 10){
+      iframeelement2.parentNode.removeChild(iframeelement2);
+    }
+    if (frameCount == startframe + courtframe * 2){  
+      iframeelement3.src = iframe_line;
+    }
+    if (frameCount == startframe + courtframe * 3 - 10){
+      iframeelement3.parentNode.removeChild(iframeelement3);
+    }
+    if (frameCount == startframe + courtframe * 3){  
+      iframeelement4.src = iframe_line;
+    }
 
     /**********************************************************************************************/
     //change the link
