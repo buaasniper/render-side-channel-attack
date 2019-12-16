@@ -18,3 +18,58 @@ Pages.tmall.com                   ---      --       --       ---
 Reddit.com *                      ------------------             (loading time can't test) （add_on can't test）
 Live.com *
 Vk.com *
+
+
+India	Google.co.in
+	Amazon.in
+	Flipkart.com
+	Onlinesbi.com
+	Indiatimes.com
+	
+Brazil	Google.com.br
+	Globo.com
+	Uol.com.br
+	Mercadolivre.com.br
+	Metropoles.com
+	
+Japan	Yahoo.co.jp
+	Amazon.co.jp
+	Google.co.jp
+	Rakuten.co.jp
+	Nicovideo.jp
+	
+russia	Yandex.ru
+	Mail.ru
+	Ok.ru
+	Avito.ru
+	Google.ru
+	
+Mexico	Google.com.mx
+	Thestartmagazine.com
+	Mercadolibre.com.mx
+	Amazon.com.mx
+	Caliente.mx
+	
+Germany	Google.de
+	Amazon.de
+	Ebay.de
+	Ebay-kleinanzeigen.de
+	Web.de
+	
+Indonesia	Okezone.com
+	Tribunnews.com
+	Detik.com
+	Liputan6.com
+	Kompas.com
+	
+Pakistan	Google.com.pk
+	Urdupoint.com
+	Daraz.pk
+	Fiverr.com
+	Olx.com.pk
+	
+UK	Amazon.co.uk
+	Google.co.uk
+	Bbc.co.uk
+	Ladbible.com
+	Ebay.co.uk
