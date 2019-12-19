@@ -31,7 +31,8 @@ function useMultiviewForStereo() {
 }
 
 // globals
-var onload_flag = 0;      // decide whether iframe onload
+var loading_time = [];    //record loading time
+var trans_load_flag = 0;
 var gl;                   // the gl context.
 var multiview;            // multiview extension.
 var canvas;               // the canvas
@@ -1806,59 +1807,41 @@ function initialize() {
 
 
     var startframe = 200;
-    var courtframe = 100;
+    var courtframe = 200;
+    var data_number_count = 0;
 
-
-    //test bandwidth
-    // navigator.connection.addEventListener('change', logNetworkInfo);
-    if (frameCount == startframe - courtframe)
-      logNetworkInfo();
-    function logNetworkInfo() {
-      // Network type that browser uses
-      console.log('         type: ' + navigator.connection.type);
-
-      // Effective bandwidth estimate
-      console.log('     downlink: ' + navigator.connection.downlink + 'Mb/s');
-      bandwidth = navigator.connection.downlink;
-
-      // Effective round-trip time estimate
-      console.log('          rtt: ' + navigator.connection.rtt + 'ms');
-
-      // Upper bound on the downlink speed of the first network hop
-      console.log('  downlinkMax: ' + navigator.connection.downlinkMax + 'Mb/s');
-
-      // Effective connection type determined using a combination of recently
-      // observed rtt and downlink values: ' +
-      console.log('effectiveType: ' + navigator.connection.effectiveType);
-      
-      // True if the user has requested a reduced data usage mode from the user
-      // agent.
-      console.log('     saveData: ' + navigator.connection.saveData);
+    
+    if (frameCount == 20){
+      trans_load_flag = 0;
+      data_number_count = 0;
     }
+      
+
+    
 
     //try to create new iframe
     // var iframe_test;
-    var iframe_line = "https://www.amazon.in/"; 
+    var iframe_line = "https://www.flipkart.com/"; 
     if (frameCount == startframe){
       iframeelement1.src = iframe_line;
     }
-    if (frameCount == startframe + courtframe - 10){
-      iframeelement1.parentNode.removeChild(iframeelement1);
-    }
+    // if (frameCount == startframe + courtframe - 10){
+    //   iframeelement1.parentNode.removeChild(iframeelement1);
+    // }
     if (frameCount == startframe + courtframe){
-      iframeelement2.src = iframe_line;
+      iframeelement1.src = iframe_line;
     }
-    if (frameCount == startframe + courtframe * 2 - 10){
-      iframeelement2.parentNode.removeChild(iframeelement2);
-    }
+    // if (frameCount == startframe + courtframe * 2 - 10){
+    //   iframeelement2.parentNode.removeChild(iframeelement2);
+    // }
     if (frameCount == startframe + courtframe * 2){  
-      iframeelement3.src = iframe_line;
+      iframeelement1.src = iframe_line;
     }
-    if (frameCount == startframe + courtframe * 3 - 10){
-      iframeelement3.parentNode.removeChild(iframeelement3);
-    }
+    // if (frameCount == startframe + courtframe * 3 - 10){
+    //   iframeelement3.parentNode.removeChild(iframeelement3);
+    // }
     if (frameCount == startframe + courtframe * 3){  
-      iframeelement4.src = iframe_line;
+      iframeelement1.src = iframe_line;
     }
 
     /**********************************************************************************************/
@@ -1956,16 +1939,16 @@ function initialize() {
       test_data4.push(Math.round(recorddata*100)/100);
     }
 
-    if (record_flag == 1){
-      if (status == 0)
-        test_data1.push(Math.round(recorddata*100)/100);
-      if (status == 1)
-        test_data2.push(Math.round(recorddata*100)/100);
-      if (status == 2)
-        test_data3.push(Math.round(recorddata*100)/100);
-      if (status == 3)
-        test_data4.push(Math.round(recorddata*100)/100);
-    }
+    // if (record_flag == 1){
+    //   if (status == 0)
+    //     test_data1.push(Math.round(recorddata*100)/100);
+    //   if (status == 1)
+    //     test_data2.push(Math.round(recorddata*100)/100);
+    //   if (status == 2)
+    //     test_data3.push(Math.round(recorddata*100)/100);
+    //   if (status == 3)
+    //     test_data4.push(Math.round(recorddata*100)/100);
+    // }
 
 
 

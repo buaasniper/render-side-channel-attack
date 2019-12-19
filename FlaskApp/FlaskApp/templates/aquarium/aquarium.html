@@ -140,16 +140,17 @@ CANVAS {
 <div id="msgContainer"></div>
 <div>
 <iframe id = "testiframe1" src = "{{url_for('iframe')}}" height = "800px" width = "800px" onload = "recordTime()"> </iframe> 
-<iframe id = "testiframe2" src = "{{url_for('iframe')}}" height = "800px" width = "800px" onload = "recordTime()"> </iframe>
+<!-- <iframe id = "testiframe2" src = "{{url_for('iframe')}}" height = "800px" width = "800px" onload = "recordTime()"> </iframe>
 <iframe id = "testiframe3" src = "{{url_for('iframe')}}" height = "800px" width = "800px" onload = "recordTime()"> </iframe>
-<iframe id = "testiframe4" src = "{{url_for('iframe')}}" height = "800px" width = "800px" onload = "recordTime()"> </iframe>
+<iframe id = "testiframe4" src = "{{url_for('iframe')}}" height = "800px" width = "800px" onload = "recordTime()"> </iframe> -->
 <!-- <iframe id = "testiframe1" src = "http://3.221.81.120:8080/iframe" height = "800px" width = "800px" onload = "recordTime()"> </iframe>-->
 </div>
 </body>
 <script>
     function recordTime(){
-      onload_flag = 1;
-      console.log("recordTime run",performance.now());
+      trans_load_flag = 1;
+      console.log("run trans_load_flag");
+      // console.log("recordTime run",performance.now());
   }
 </script>
 <script id="texVertexShader" type="text/something-not-javascript">
