@@ -23,15 +23,15 @@ Vk.com *
 India	
 Google.co.in                      ----------------
 Amazon.in                         ----------------
-Flipkart.com
-Onlinesbi.com
-Indiatimes.com
+Flipkart.com                      worked
+Onlinesbi.com                     worked
+Indiatimes.com                    didn't work ?????
 	
 Brazil	
-Google.com.br
-Globo.com
-Uol.com.br
-Mercadolivre.com.br
+Google.com.br                     ----------------
+Globo.com						  worked
+Uol.com.br						  worked // change code
+Mercadolivre.com.br 
 Metropoles.com
 	
 Japan	Yahoo.co.jp

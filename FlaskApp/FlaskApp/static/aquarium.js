@@ -1807,7 +1807,7 @@ function initialize() {
 
 
     var startframe = 200;
-    var courtframe = 200;
+    var courtframe = 100;
     var data_number_count = 0;
 
     
@@ -1821,27 +1821,27 @@ function initialize() {
 
     //try to create new iframe
     // var iframe_test;
-    var iframe_line = "https://www.flipkart.com/"; 
+    var iframe_line = "https://www.uol.com.br/"; 
     if (frameCount == startframe){
       iframeelement1.src = iframe_line;
     }
-    // if (frameCount == startframe + courtframe - 10){
-    //   iframeelement1.parentNode.removeChild(iframeelement1);
-    // }
+    if (frameCount == startframe + courtframe - 10){
+      iframeelement1.parentNode.removeChild(iframeelement1);
+    }
     if (frameCount == startframe + courtframe){
-      iframeelement1.src = iframe_line;
+      iframeelement2.src = iframe_line;
     }
-    // if (frameCount == startframe + courtframe * 2 - 10){
-    //   iframeelement2.parentNode.removeChild(iframeelement2);
-    // }
+    if (frameCount == startframe + courtframe * 2 - 10){
+      iframeelement2.parentNode.removeChild(iframeelement2);
+    }
     if (frameCount == startframe + courtframe * 2){  
-      iframeelement1.src = iframe_line;
+      iframeelement3.src = iframe_line;
     }
-    // if (frameCount == startframe + courtframe * 3 - 10){
-    //   iframeelement3.parentNode.removeChild(iframeelement3);
-    // }
+    if (frameCount == startframe + courtframe * 3 - 10){
+      iframeelement3.parentNode.removeChild(iframeelement3);
+    }
     if (frameCount == startframe + courtframe * 3){  
-      iframeelement1.src = iframe_line;
+      iframeelement4.src = iframe_line;
     }
 
     /**********************************************************************************************/
