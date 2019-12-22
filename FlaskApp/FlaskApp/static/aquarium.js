@@ -47,7 +47,7 @@ var g_scenes = {};  // each of the models
 var g_sceneGroups = {};  // the placement of the models
 var g_fog = true;
 //yujianjia
-var g_numFish = [1, 10, 15000, 15000, 15000, 10000, 15000, 20000, 25000, 30000];
+var g_numFish = [1, 10, 30000, 15000, 15000, 10000, 15000, 20000, 25000, 30000];
 
 var g_stereoDemoActive = false;
 var g_shadersNeedUpdate = false; // Set to true whenever the state has changed so that shaders may need to be changed.
