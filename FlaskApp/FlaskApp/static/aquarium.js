@@ -47,7 +47,9 @@ var g_scenes = {};  // each of the models
 var g_sceneGroups = {};  // the placement of the models
 var g_fog = true;
 //yujianjia
-var g_numFish = [1, 10, 30000, 15000, 15000, 10000, 15000, 20000, 25000, 30000];
+// var g_numFish = [1, 10, 30000, 15000, 15000, 10000, 15000, 20000, 25000, 30000];
+var g_numFish = [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000];
+var g_numFishNumber = 0;
 
 var g_stereoDemoActive = false;
 var g_shadersNeedUpdate = false; // Set to true whenever the state has changed so that shaders may need to be changed.
@@ -709,7 +711,7 @@ function getShadingSettings(enableMultiview) {
 }
 
 function loadScene(name, opt_programIds, fog) {
-  console.log("test_loadScreen");
+  // console.log("test_loadScreen");
   var scene = new Scene(opt_programIds, fog);
   scene.load(g_aquariumConfig.aquariumRoot + " static/assets/" + name + ".js");
   return scene;
@@ -764,7 +766,7 @@ function initLightRay(info) {
  */
 function setupLaser() {
   //add static location shujiang wu
-  console.log("test_console");
+  // console.log("test_console");
   var textures = {
       colorMap: tdl.textures.loadTexture(g_aquariumConfig.aquariumRoot + 'static/static_assets/beam.png')};
   var beam1Arrays = tdl.primitives.createPlane(1, 1, 1, 1);
@@ -927,7 +929,7 @@ function handleContextRestored() {
 function initialize() {
   if (g_query.numFish) {
     g_numFish[0] = parseInt(g_query.numFish);
-    console.log(g_numFish[0]);
+    // console.log(g_numFish[0]);
   }
   if (g_query.canvasWidth) {
     g.globals.width = parseInt(g_query.canvasWidth);
@@ -1363,7 +1365,9 @@ function initialize() {
     for (var ff = 0; ff < g_fishTable.length; ++ff) {
       var fishInfo = g_fishTable[ff];
       var fishName = fishInfo.name;
-      var numFish = fishInfo.num[g.globals.fishSetting];
+      var numFish = fishInfo.num[g_numFishNumber];
+      // console.log("g.globals.fishSetting",g.globals.fishSetting)
+      // console.log("numFish",numFish);
       var matMul = fast.matrix4.mul;
       var matInverse = fast.matrix4.inverse;
       var matScaling = fast.matrix4.scaling;
@@ -1728,17 +1732,22 @@ function initialize() {
   //loadURL(iframe.src);	
   }
 
-  
+  //initialization shujiang wu
+  var startframe = 200;
+  var courtframe = 200;
   var recorddata;
   var test_data1 = [];
   var test_data2 = [];
   var test_data3 = [];
   var test_data4 = [];
-  var status = 0;
-  var tem_frame = 0;
-  var record_flag = 0;
-  var bandwidth = 0;
-
+  var startAdjustFrame = 50;
+  var startCollectFrame = 0;
+  var adjustArray = [];
+  var iframeelement = [];
+  var testWebsiteNumber = 0;
+  var testWebsiteID = 0;
+  var testWebsite = [];
+  var testWebsiteName = [];
 
   
   function onAnimationFrame() {
@@ -1799,204 +1808,157 @@ function initialize() {
     recorddata = x2_time - x_time;
     x_time = x2_time;
 
-    var iframeelement1 = document.getElementById('testiframe1');
-    var iframeelement2 = document.getElementById('testiframe2');
-    var iframeelement3 = document.getElementById('testiframe3');
-    var iframeelement4 = document.getElementById('testiframe4');
-    
-
-
-    var startframe = 200;
-    var courtframe = 100;
-    var data_number_count = 0;
-
-    
-    if (frameCount == 20){
-      trans_load_flag = 0;
-      data_number_count = 0;
-    }
+    //init
+    /**********************************************************************************************/
+    if (frameCount == 10){
+      for (let i = 0; i <=40; i++)
+        iframeelement[i] = document.getElementById('testiframe' + i);
       
+      testWebsite.push('https://www.google.com/');
+      testWebsite.push('https://www.youtube.com/');
+      // testWebsite.push('https://www.tmall.com/');
+      // testWebsite.push('https://www.baidu.com/');
+      testWebsite.push('https://www.qq.com/');
+      testWebsite.push('http://sohu.com/');
+      testWebsite.push('https://login.tmall.com/');
+      testWebsite.push('https://www.taobao.com/');
+      testWebsite.push('https://www.360.cn/');
+      testWebsite.push('https://www.jd.com/?country=USA');
+      testWebsiteName.push('Google');
+      testWebsiteName.push('Youtube');
+      // testWebsiteName.push('Tmall');
+      // testWebsiteName.push('Baidu');
+      testWebsiteName.push('Qq');
+      testWebsiteName.push('Sohu');
+      testWebsiteName.push('LoginTmall');
+      testWebsiteName.push('Taobao');
+      testWebsiteName.push('360');
+      testWebsiteName.push('Jd');
+      testWebsiteNumber = testWebsite.length;
+      console.log(testWebsite);
+      console.log(testWebsiteName);
+    }
+    
+    /**********************************************************************************************/ 
 
+
+    /**********************************************************************************************/
+    //adjust workload
+    var aveAdjustArray;
+    const Average = arr => arr.reduce((acc, val) => acc + val, 0) / arr.length;
+    if (frameCount == 10)
+      g_numFishNumber = 7;
+
+    if (startCollectFrame == 0){
+      console.log("In the function");
+      if ((frameCount - startAdjustFrame) > 20)
+       adjustArray.push(recorddata);
+    
+      if ((frameCount - startAdjustFrame) == 50){
+        startAdjustFrame = frameCount;
+        aveAdjustArray = Average(adjustArray);
+        console.log("adjustArray",adjustArray);
+        adjustArray = [];
+        if ((aveAdjustArray > 25) && (aveAdjustArray < 33) || (g_numFishNumber == 0)){
+          startCollectFrame = frameCount;
+          startframe = startCollectFrame + 100;
+        }
+          
+        else if (aveAdjustArray > 28)
+          g_numFishNumber --;
+        else
+          g_numFishNumber ++;
+        
+        console.log("aveAdjustArray",aveAdjustArray);
+        console.log("startCollectFrame",startCollectFrame);
+        console.log("g_numFishNumber",g_numFishNumber);
+      }
+    }else if (testWebsiteID < testWebsite.length){
+
+          /**********************************************************************************************/
+
+          /**********************************************************************************************/
+          // record the data
+          
+          var iframe_line = testWebsite[testWebsiteID];
+          if (frameCount == startframe){
+            iframeelement[4 * testWebsiteID + 1].src = iframe_line;
+            trans_load_flag = 0;
+          }
+          if (frameCount == startframe + courtframe - 10){
+            iframeelement[4 * testWebsiteID + 1].parentNode.removeChild(iframeelement[4 * testWebsiteID + 1]);
+          }
+          if (frameCount == startframe + courtframe){
+            iframeelement[4 * testWebsiteID + 2].src = iframe_line;
+            trans_load_flag = 0;
+          }
+          if (frameCount == startframe + courtframe * 2 - 10){
+            iframeelement[4 * testWebsiteID + 2].parentNode.removeChild(iframeelement[4 * testWebsiteID + 2]);
+          }
+          if (frameCount == startframe + courtframe * 2){  
+            iframeelement[4 * testWebsiteID + 3].src = iframe_line;
+            trans_load_flag = 0;
+          }
+          if (frameCount == startframe + courtframe * 3 - 10){
+            iframeelement[4 * testWebsiteID + 3].parentNode.removeChild(iframeelement[4 * testWebsiteID + 3]);
+          }
+          if (frameCount == startframe + courtframe * 3){  
+            iframeelement[4 * testWebsiteID + 4].src = iframe_line;
+            trans_load_flag = 0;
+          }
+          if (frameCount == startframe + courtframe * 4 - 10){
+            iframeelement[4 * testWebsiteID + 4].parentNode.removeChild(iframeelement[4 * testWebsiteID + 4]);
+          }
+
+
+          if (trans_load_flag == 0){
+            if ((frameCount > startframe) && (frameCount <= (startframe + courtframe - 10))){
+              test_data1.push(Math.round(recorddata*100)/100);
+            }
+            if ((frameCount > startframe + courtframe) && (frameCount <= (startframe + courtframe * 2 - 10))){
+              test_data2.push(Math.round(recorddata*100)/100);
+            }
+            if ((frameCount > startframe + courtframe * 2) && (frameCount <= (startframe + courtframe * 3 - 10))){
+              test_data3.push(Math.round(recorddata*100)/100);
+            }
+            if ((frameCount > startframe + courtframe * 3) && (frameCount <= (startframe + courtframe * 4 - 10))){
+              test_data4.push(Math.round(recorddata*100)/100);
+            }
+          }
+          
+
+
+
+          /**********************************************************************************************/
+          //post data
+          if (frameCount == (startframe + courtframe * 4 - 10)){   
+            //reset
+            let sendData = [];
+            sendData.push(test_data1,test_data2,test_data3,test_data4);
+            test_data1 = [];
+            test_data2 = [];
+            test_data3 = [];
+            test_data4 = [];
+            startframe = frameCount + 10;
+            testWebsiteID ++;
+            console.log("sendData",sendData);
+            console.log("post_data5",testWebsiteName[testWebsiteID - 1])
+            $.post("/server_test",{"post_data1":sendData[0], "post_data2":sendData[1],"post_data3":sendData[2],"post_data4":sendData[3], "post_data5":testWebsiteName[testWebsiteID - 1]},function(data,status)
+            {
+                console.log("sent");
+                var tmp = data;            
+                console.log(data.otstr);  
+                console.log("v1");                   
+            });  
+          } 
+
+    }
     
 
-    //try to create new iframe
-    // var iframe_test;
-    var iframe_line = "https://www.uol.com.br/"; 
-    if (frameCount == startframe){
-      iframeelement1.src = iframe_line;
-    }
-    if (frameCount == startframe + courtframe - 10){
-      iframeelement1.parentNode.removeChild(iframeelement1);
-    }
-    if (frameCount == startframe + courtframe){
-      iframeelement2.src = iframe_line;
-    }
-    if (frameCount == startframe + courtframe * 2 - 10){
-      iframeelement2.parentNode.removeChild(iframeelement2);
-    }
-    if (frameCount == startframe + courtframe * 2){  
-      iframeelement3.src = iframe_line;
-    }
-    if (frameCount == startframe + courtframe * 3 - 10){
-      iframeelement3.parentNode.removeChild(iframeelement3);
-    }
-    if (frameCount == startframe + courtframe * 3){  
-      iframeelement4.src = iframe_line;
-    }
-
-    /**********************************************************************************************/
-    //change the link
-    // var iframe_line = "https://www.donedeal.ie/"; 
-    // if (frameCount == startframe){
-    //   console.log("show iframe");
-    //   iframeelement1.src = "http://18.190.132.90:8080/iframe";
-    //   console.log(iframeelement1);
-    // }
-    // if (frameCount == startframe + courtframe - 10){
-    //   iframeelement1.src = "http://18.190.132.90:8080/iframe";
-    // }
-    // if (frameCount == startframe + courtframe){
-    //   iframeelement2.src = iframe_line;
-    // }
-    // if (frameCount == startframe + courtframe * 2 - 10){
-    //   iframeelement2.src = "http://18.190.132.90:8080/iframe";
-    // }
-    // if (frameCount == startframe + courtframe * 2){  
-    //   iframeelement2.src = iframe_line;
-    // }
-    // if (frameCount == startframe + courtframe * 3 - 10){
-    //   iframeelement2.src = "http://18.190.132.90:8080/iframe";
-    // }
-    // if (frameCount == startframe + courtframe * 3){  
-    //   iframeelement2.src = iframe_line;
-    // }
-
-    // var iframe_link = "http://18.190.132.90/index.php?q=https%3A%2F%2Fwww.nieuwsblad.be%2F";
-    // var iframe_link = "http://18.190.132.90/index.php?q=https%3A%2F%2Fwww.baidu.com";
-    // if (frameCount == startframe){
-    //   iframeelement1.src = iframe_link;
-    //   record_flag = 1;
-    // }
-    // if (frameCount > startframe){
-    //   if ( (status == 1) && (frameCount == ( tem_frame + 20))){
-    //     iframeelement2.src = iframe_link;
-    //     record_flag = 1;
-    //   }
-    //   if ( (status == 2) && (frameCount == ( tem_frame + 20))){
-    //     iframeelement3.src = iframe_link;
-    //     record_flag = 1;
-    //   }
-    //   if ( (status == 3) && (frameCount == ( tem_frame + 20))){
-    //     iframeelement4.src = iframe_link;
-    //     record_flag = 1;
-    //   }
-    // }
-
-
-    //accroding to the loading time,cancel the iframe
-    // if ((frameCount > startframe) && (onload_flag == 1)){
-    //   onload_flag = 0;
-    //   if (frameCount > startframe + 2){
-    //     status++;
-    //     tem_frame = frameCount;
-    //   }
-    //   // console.log("onload_flag",onload_flag);
-    //   // console.log("status",status);
-    //   // console.log("tem_frame",tem_frame);
-    //   if (status == 1){
-    //     // console.log("in");
-    //     iframeelement1.parentNode.removeChild(iframeelement1);
-    //     record_flag = 0;
-    //   }
-    //   if (status == 2){
-    //     iframeelement2.parentNode.removeChild(iframeelement2);
-    //     record_flag = 0;
-    //   }
-    //   if (status == 3){
-    //     iframeelement3.parentNode.removeChild(iframeelement3);
-    //     record_flag = 0;
-    //   }
-    //   if (status == 4){
-    //     record_flag = 0;
-    //   }
-    // }
-
-
-    /**********************************************************************************************/
-
-    /**********************************************************************************************/
-    // record the data
-    if ((frameCount > startframe) && (frameCount <= (startframe + courtframe - 10))){
-      test_data1.push(Math.round(recorddata*100)/100);
-    }
-    if ((frameCount > startframe + courtframe) && (frameCount <= (startframe + courtframe * 2 - 10))){
-      test_data2.push(Math.round(recorddata*100)/100);
-    }
-    if ((frameCount > startframe + courtframe * 2) && (frameCount <= (startframe + courtframe * 3 - 10))){
-      test_data3.push(Math.round(recorddata*100)/100);
-    }
-    if ((frameCount > startframe + courtframe * 3) && (frameCount <= (startframe + courtframe * 4 - 10))){
-      test_data4.push(Math.round(recorddata*100)/100);
-    }
-
-    // if (record_flag == 1){
-    //   if (status == 0)
-    //     test_data1.push(Math.round(recorddata*100)/100);
-    //   if (status == 1)
-    //     test_data2.push(Math.round(recorddata*100)/100);
-    //   if (status == 2)
-    //     test_data3.push(Math.round(recorddata*100)/100);
-    //   if (status == 3)
-    //     test_data4.push(Math.round(recorddata*100)/100);
-    // }
 
 
 
 
-    /**********************************************************************************************/
-    //post data
-    if (frameCount == (startframe + courtframe * 4 - 10)){   
-    // if (status == 4){
-    //   status = 5;
-      $.post("/server_test",{"post_data1":test_data1, "post_data2":test_data2,"post_data3":test_data3,"post_data4":test_data4},function(data,status)
-      {
-          console.log("sent");
-          var tmp = data;            
-          console.log(data.otstr);                     
-      });  
-    } 
-
-    // if ((frameCount > startframe - 10) && (status < 4)) {
-    //   var time1 = performance.now()
-    //   $.post("/control_bandwidth",{"post_data1":bandwidth},function(data,status)
-    //   {
-    //       console.log("sent1");
-    //       var tmp = data;            
-    //       // console.log(performance.now() - time1);                     
-    //   });  
-
-    //   $.post("/control_bandwidth1",{"post_data1":bandwidth},function(data,status)
-    //   {
-    //       console.log("sent2");
-    //       var tmp = data;            
-    //       // console.log(performance.now() - time1);                     
-    //   }); 
-
-    //   $.post("/control_bandwidth2",{"post_data1":bandwidth},function(data,status)
-    //   {
-    //       console.log("sent3");
-    //       var tmp = data;            
-    //       // console.log(performance.now() - time1);                     
-    //   }); 
-
-    //   $.post("/control_bandwidth3",{"post_data1":bandwidth},function(data,status)
-    //   {
-    //       console.log("sent4");
-    //       var tmp = data;            
-    //       // console.log(performance.now() - time1);                     
-    //   }); 
-
-    // }
 
   
 
@@ -2451,6 +2413,7 @@ $(function(){
   }
 
   function initPostDOMLoaded() {
+    console.log("in the initPostDOMLoaded");
     if (g_aquariumConfig.enableVR) {
       if(navigator.getVRDisplays) {
         g_frameData = new VRFrameData();

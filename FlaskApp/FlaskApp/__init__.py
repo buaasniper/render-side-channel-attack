@@ -24,14 +24,19 @@ def twowindow():
 def iframe():
     return render_template('./aquarium/load.html')
 
+@app.route("/adjust")
+def adjust ():
+    return render_template('./aquarium/adjust.html')
+
 @app.route('/server_test',methods=['POST'])
 def server_test():
     data1 = request.form.getlist('post_data1[]')
     data2 = request.form.getlist('post_data2[]')
     data3 = request.form.getlist('post_data3[]')
     data4 = request.form.getlist('post_data4[]')
+    data5 = request.form.get('post_data5')
     now = time.strftime("%Y-%m-%d-%H_%M_%S",time.localtime(time.time())) 
-    fname = "/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Test/" + now +r".csv"
+    fname = "/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Test/" + now + data5 +r".csv"
     csvFile = open(fname,'wb')
     writer = csv.writer(csvFile)
     writer.writerows([data1,data2,data3,data4])
@@ -58,7 +63,7 @@ def server_test():
 
     plt.legend(('First Time(D)', 'Second Time', 'Third Time', 'Fourth Time'),loc='upper right')
     fig.tight_layout()
-    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Test/" + now +r".png")
+    plt.savefig("/home/ubuntu/Sites/FlaskApp/FlaskApp/templates/Data/Test/" + now + data5 +r".png")
 
 
     return jsonify(otstr=[1,2,3,4,5,6,7])
