@@ -1748,6 +1748,8 @@ function initialize() {
   var testWebsiteID = 0;
   var testWebsite = [];
   var testWebsiteName = [];
+  var testData = []; // Analyzed data
+  var analyzeFlag = 0;
 
   
   function onAnimationFrame() {
@@ -1814,23 +1816,25 @@ function initialize() {
       for (let i = 0; i <=40; i++)
         iframeelement[i] = document.getElementById('testiframe' + i);
       
-      testWebsite.push('https://www.google.com/');
-      testWebsite.push('https://www.youtube.com/');
-      // testWebsite.push('https://www.tmall.com/');
-      // testWebsite.push('https://www.baidu.com/');
+      // testWebsite.push('https://www.google.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+      // testWebsite.push('https://www.youtube.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+      testWebsite.push('https://www.tmall.com/');
+      testWebsite.push('https://www.baidu.com/');
       testWebsite.push('https://www.qq.com/');
-      testWebsite.push('http://sohu.com/');
-      testWebsite.push('https://login.tmall.com/');
+      testWebsite.push('https://www.sohu.com/');
+      // testWebsite.push('https://login.tmall.com/');
       testWebsite.push('https://www.taobao.com/');
       testWebsite.push('https://www.360.cn/');
       testWebsite.push('https://www.jd.com/?country=USA');
       testWebsiteName.push('Google');
       testWebsiteName.push('Youtube');
-      // testWebsiteName.push('Tmall');
-      // testWebsiteName.push('Baidu');
+      testWebsiteName.push('Tmall');
+      testWebsiteName.push('Baidu');
       testWebsiteName.push('Qq');
       testWebsiteName.push('Sohu');
-      testWebsiteName.push('LoginTmall');
+      // testWebsiteName.push('LoginTmall');
       testWebsiteName.push('Taobao');
       testWebsiteName.push('360');
       testWebsiteName.push('Jd');
@@ -1879,7 +1883,12 @@ function initialize() {
 
           /**********************************************************************************************/
           // record the data
-          
+          courtframe = 400;
+          if (testWebsiteID == 0)
+            courtframe = 150;
+          if (testWebsiteID == 0)
+            countframe = 250;
+
           var iframe_line = testWebsite[testWebsiteID];
           if (frameCount == startframe){
             iframeelement[4 * testWebsiteID + 1].src = iframe_line;
@@ -1935,6 +1944,7 @@ function initialize() {
             //reset
             let sendData = [];
             sendData.push(test_data1,test_data2,test_data3,test_data4);
+            testData.push(sendData)
             test_data1 = [];
             test_data2 = [];
             test_data3 = [];
@@ -1943,6 +1953,11 @@ function initialize() {
             testWebsiteID ++;
             console.log("sendData",sendData);
             console.log("post_data5",testWebsiteName[testWebsiteID - 1])
+            console.log("testWebsiteID",testWebsiteID);
+            console.log("testWebsiteName.lenght",testWebsiteName.length);
+            if (testWebsiteID == testWebsiteName.length)
+              analyzeFlag = 1;
+            console.log("analyzeFlag",analyzeFlag);
             $.post("/server_test",{"post_data1":sendData[0], "post_data2":sendData[1],"post_data3":sendData[2],"post_data4":sendData[3], "post_data5":testWebsiteName[testWebsiteID - 1]},function(data,status)
             {
                 console.log("sent");
@@ -1950,7 +1965,122 @@ function initialize() {
                 console.log(data.otstr);  
                 console.log("v1");                   
             });  
+
           } 
+
+    }
+
+
+    /**********************************************************************************************/
+    //Analyze Data
+    if (analyzeFlag == 1){
+      console.log("Analyze Data");
+      for (let i = 0; i < testWebsiteName.length; i++){
+        test_data1 = testData[i][0];
+        test_data2 = testData[i][1];
+        test_data3 = testData[i][2];
+        test_data4 = testData[i][3];
+        let temA1 = test_data1.concat(test_data2);
+        let temA2 = temA1.concat(test_data3);
+        temA1 = temA2.concat(test_data4);
+        temA2 = temA1.sort(sortNumber);
+        // console.log("test_data1",test_data1);
+        // console.log("test_data2",test_data2);
+        // console.log("test_data3",test_data3);
+        // console.log("test_data4",test_data4);
+        // console.log("temA1",temA1);
+        // console.log("temA2",temA2);
+        var aveMid = temA2[ Math.floor(temA2.length * 0.975)];  //3
+        var aveLow = temA2[ Math.floor(temA2.length * 0.475)];  //0
+        console.log(aveLow);
+        console.log(aveMid);
+        for (let i = 0; i < test_data1.length; i++)
+          if (test_data1[i] < aveLow)
+            test_data1[i] = 0;
+          else  
+            test_data1[i] = (test_data1[i] - aveLow) / (aveMid - aveLow) * 3;
+        
+        for (let i = 0; i < test_data2.length; i++)
+        if (test_data2[i] < aveLow)
+          test_data2[i] = 0;
+        else  
+          test_data2[i] = (test_data2[i] - aveLow) / (aveMid - aveLow) * 3;
+
+        for (let i = 0; i < test_data3.length; i++)
+        if (test_data3[i] < aveLow)
+          test_data3[i] = 0;
+        else  
+          test_data3[i] = (test_data3[i] - aveLow) / (aveMid - aveLow) * 3;
+
+
+        for (let i = 0; i < test_data4.length; i++)
+        if (test_data4[i] < aveLow)
+          test_data4[i] = 0;
+        else  
+          test_data4[i] = (test_data4[i] - aveLow) / (aveMid - aveLow) * 3;
+
+        console.log("test_data1",test_data1);
+        console.log("test_data2",test_data2);
+        console.log("test_data3",test_data3);
+        console.log("test_data4",test_data4);
+
+        // console.log("test_data1", test_data1);
+        // console.log("test_data2", test_data2);
+        // console.log("test_data3", test_data3);
+        let controlDistance1 = DTW(test_data2,test_data3);
+        let controlDistance2 = DTW(test_data2,test_data4);
+        let controlDistance3 = DTW(test_data3,test_data4);
+        let testDistance1 = DTW(test_data1,test_data2);
+        let testDistance2 = DTW(test_data1,test_data2);
+        let testDistance3 = DTW(test_data1,test_data3);
+        console.log("Results:");
+        console.log("TestWebsite: ", testWebsiteName[i]);
+        console.log("Ave_Control:", (controlDistance1 + controlDistance2 + controlDistance3) / 3.0);
+        console.log("Ave_Test:   ", (testDistance1 + testDistance2 + testDistance3) / 3.0);
+        console.log("Rate:       ", (testDistance1 + testDistance2 + testDistance3)/(controlDistance1 + controlDistance2 + controlDistance3));
+        console.log("Detail:     ", controlDistance1, controlDistance2, controlDistance3, testDistance1, testDistance2, testDistance3);
+        
+      }
+      
+      analyzeFlag = 0;
+
+
+    }
+
+    function sortNumber(a,b)
+    {
+      return a - b
+    }
+
+    function DTW(Q, C){
+      var m = Q.length;
+      var n = C.length;
+      // console.log("Q", Q);
+      // console.log("C", C);
+      var distanceMap = [];
+      var DTWMap = [];
+      for (let j = 0; j < n; j++){
+        var temAttay = [];
+        for (let i = 0; i < m; i++){
+          let temDistance = Math.abs(Q[i] - C[j]) * (Math.abs(i - j) + 1);
+          temAttay.push(temDistance);
+        }
+        distanceMap.push(temAttay);
+        DTWMap.push(temAttay);
+      }
+      // console.log("distanceMap", distanceMap);
+      for (let j = 0; j < n; j++){
+        for (let i = 0; i < m; i++){
+          if ((i != 0) && (j != 0)){
+            let value1 = DTWMap[j-1][i] + distanceMap[j][i];
+            let value2 = DTWMap[j][i-1] + distanceMap[j][i];
+            let value3 = DTWMap[j-1][i-1] + distanceMap[j][i] * 2;
+            DTWMap[j][i] = Math.min(value1, value2, value3);
+          }
+        }
+      }
+      // console.log("DTWMap", DTWMap);
+      return (DTWMap[n-1][m-1]);
 
     }
     
