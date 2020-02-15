@@ -24,6 +24,10 @@ def twowindow():
 def iframe():
     return render_template('./aquarium/load.html')
 
+@app.route("/test")
+def test():
+    return render_template('./aquarium/test.html')
+
 @app.route("/adjust")
 def adjust ():
     return render_template('./aquarium/adjust.html')

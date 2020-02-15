@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import operator
 import math
+from random import seed
+from random import random
 
 
 def Predict(collectData):
@@ -24,7 +26,10 @@ def Predict(collectData):
             if collectData[i][j] < aveLow:
                 collectData[i][j] = 0
             else:
-                collectData[i][j] = (collectData[i][j] - aveLow) / (aveMid - aveLow) * 3
+                if ((aveMid - aveLow)) == 0:
+                    collectData[i][j] = 0
+                else:
+                    collectData[i][j] = (collectData[i][j] - aveLow) / (aveMid - aveLow) * 3
                 if collectData[i][j] < 0.5:
                     collectData[i][j] = 0
     print(aveLow, aveMid)
@@ -77,13 +82,15 @@ def DTW(Q, C):
 
 
 
-
+roundValue = 25.0
 if __name__ == '__main__':
     websiteName = '360/'
-    cachepath = './Tor/Cache/' + websiteName
-    nocachepath =  './Tor/NoCache/' + websiteName
+    cachepath = './Chrome/Cache/' + websiteName
+    nocachepath =  './Chrome/NoCache/' + websiteName
     cacheNumber = 0
     nocacheNumber = 0
+    cutvalue = 120
+    # roundValue = 800.0
     for info in os.listdir(cachepath):
         if info.endswith('v'):
             print(info)
@@ -94,8 +101,16 @@ if __name__ == '__main__':
                 for line in f.readlines():
                     array = line.split(',')
                     array = map(float, array)
+                    # array = array[:cutvalue]
+                    # for i in range (1, len(array)):
+                    #     array[i] = array[i] + array[i - 1] + random() * roundValue
+                    # for i in range (len(array)):
+                    #     array[i] = math.ceil(array[i] / roundValue) * roundValue
+                    # # print (array)
+                    # for i in range (len(array)-1, 0, -1):
+                    #     array[i] = array[i] - array[i - 1]
                     collectData.append(array)
-                    # print (array)
+                    # print ('cachelength',len(array))
                 # print(collectData)
                 predictresult = Predict(collectData)
 
@@ -114,32 +129,22 @@ if __name__ == '__main__':
                 for line in f.readlines():
                     array = line.split(',')
                     array = map(float, array)
+                    # array = array[:cutvalue]
+                    # print(array)
+                    # for i in range (1, len(array)):
+                    #     array[i] = array[i] + array[i - 1]
+                    # for i in range (len(array)):
+                    #     array[i] = math.ceil(array[i] / roundValue) * roundValue
+                    # # print (array)
+                    # for i in range (len(array)-1, 0, -1):
+                    #     array[i] = array[i] - array[i - 1]
+                    # print (array)
                     collectData.append(array)
                     # print (array)
                 # print(collectData)
                 predictresult = Predict(collectData)
     print("cacheNumber",cacheNumber)
     print("nocacheNumber",nocacheNumber)
-
-    '''  
-    
-            predict->True     
-             cache->cache    cache->no         no->no        no->cache      value            precision    Recall     f1_score
-        360       12/12            0/12         9/12           3/12          300             12/12         12/15
-        Baidu     12/12            0/12         11/12          1/12          60              12/12         12/13
-        Google    9/12             3/12         5/12           7/12          10              9/12          9/16
-        Jd        11/12            1/12         7/12           5/12          400             11/12         11/16
-        LT        5/12             7/12         7/12           5/12          450             5/12          5/10
-        Qq        5/12             7/12         11/12          1/12          100             5/12          5/6
-        Sohu      4/11             7/11         10/12          2/12          140             4/11          4/6
-        Taobao    10/12            2/12         8/12           4/12          200             10/12         10/14
-        Tmall     9/12             3/12         9/12           3/12          400             9/12          9/12
-        Youtube   7/12             5/12         9/12           3/12          60              7/12          7/10
-        All       84/119           35/119       86/120         34/120        --              84/119        84/118      0.709
-    '''
-
-
-                
 
 
 

@@ -31,8 +31,8 @@ function useMultiviewForStereo() {
 }
 
 // globals
-var time_300;
-var time_onload;
+var loading_time = [];    //record loading time
+var trans_load_flag = 0;
 var gl;                   // the gl context.
 var multiview;            // multiview extension.
 var canvas;               // the canvas
@@ -47,7 +47,9 @@ var g_scenes = {};  // each of the models
 var g_sceneGroups = {};  // the placement of the models
 var g_fog = true;
 //yujianjia
-var g_numFish = [1, 100, 15000, 1000, 15000, 10000, 15000, 20000, 25000, 30000];
+// var g_numFish = [1, 10, 30000, 15000, 15000, 10000, 15000, 20000, 25000, 30000];
+var g_numFish = [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000,55000, 60000, 65000, 70000, 75000, 80000, 85000, 90000, 95000, 10000, 11000];
+var g_numFishNumber = 0;
 
 var g_stereoDemoActive = false;
 var g_shadersNeedUpdate = false; // Set to true whenever the state has changed so that shaders may need to be changed.
@@ -709,7 +711,7 @@ function getShadingSettings(enableMultiview) {
 }
 
 function loadScene(name, opt_programIds, fog) {
-  console.log("test_loadScreen");
+  // console.log("test_loadScreen");
   var scene = new Scene(opt_programIds, fog);
   scene.load(g_aquariumConfig.aquariumRoot + " static/assets/" + name + ".js");
   return scene;
@@ -764,7 +766,7 @@ function initLightRay(info) {
  */
 function setupLaser() {
   //add static location shujiang wu
-  console.log("test_console");
+  // console.log("test_console");
   var textures = {
       colorMap: tdl.textures.loadTexture(g_aquariumConfig.aquariumRoot + 'static/static_assets/beam.png')};
   var beam1Arrays = tdl.primitives.createPlane(1, 1, 1, 1);
@@ -927,7 +929,7 @@ function handleContextRestored() {
 function initialize() {
   if (g_query.numFish) {
     g_numFish[0] = parseInt(g_query.numFish);
-    console.log(g_numFish[0]);
+    // console.log(g_numFish[0]);
   }
   if (g_query.canvasWidth) {
     g.globals.width = parseInt(g_query.canvasWidth);
@@ -1363,7 +1365,9 @@ function initialize() {
     for (var ff = 0; ff < g_fishTable.length; ++ff) {
       var fishInfo = g_fishTable[ff];
       var fishName = fishInfo.name;
-      var numFish = fishInfo.num[g.globals.fishSetting];
+      var numFish = fishInfo.num[g_numFishNumber];
+      // console.log("g.globals.fishSetting",g.globals.fishSetting)
+      // console.log("numFish",numFish);
       var matMul = fast.matrix4.mul;
       var matInverse = fast.matrix4.inverse;
       var matScaling = fast.matrix4.scaling;
@@ -1728,16 +1732,31 @@ function initialize() {
   //loadURL(iframe.src);	
   }
 
-  
+  //initialization shujiang wu
+  var startframe = 200;
+  var courtframe = 200;
   var recorddata;
   var test_data1 = [];
   var test_data2 = [];
   var test_data3 = [];
   var test_data4 = [];
-
+  var startAdjustFrame = 50;
+  var startCollectFrame = 0;
+  var adjustArray = [];
+  var iframeelement = [];
+  var testWebsiteNumber = 0;
+  var testWebsiteID = 0;
+  var testWebsite = [];
+  var testWebsiteName = [];
+  var testWebsiteFrame = [];
+  var testData = []; // Analyzed data
+  var analyzeFlag = 0;
+  var trans_state = 0;
+  var testWindow;
+  var preTimeStamp = 0;
 
   
-  function onAnimationFrame() {
+  function onAnimationFrame(timeStamp) {
     var now = theClock.getTime();
     var elapsedTime;
     if(then == 0.0) {
@@ -1791,97 +1810,682 @@ function initialize() {
     g_fpsTimer.update(elapsedTime);
     fpsElem.innerHTML = g_fpsTimer.averageFPS;
     
-    var x2_time = performance.now();
-    recorddata = x2_time - x_time;
-    x_time = x2_time;
+    
+    recorddata = timeStamp - preTimeStamp;
+    preTimeStamp = timeStamp;
 
-    if (frameCount == 500){
-      console.log('open another window');
-      console.log('**************************************');
+    //init
+    /**********************************************************************************************/
+    if (frameCount == 10){
+      // for (let i = 0; i <=40; i++)
+      //   iframeelement[i] = document.getElementById('testiframe' + i);
+      
+      // testWebsite.push('https://www.google.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+      // testWebsite.push('https://www.youtube.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+      testWebsite.push('https://www.tmall.com/');
+      testWebsite.push('https://www.baidu.com/');
+      testWebsite.push('https://www.qq.com/');
+      testWebsite.push('https://www.sohu.com/');
+      // testWebsite.push('https://login.tmall.com/');
+      testWebsite.push('https://www.taobao.com/');
+      testWebsite.push('https://www.360.cn/');
+      testWebsite.push('https://www.jd.com/?country=USA');
+
+
+      testWebsiteName.push('Google');
+      testWebsiteName.push('Youtube');
+      testWebsiteName.push('Tmall');
+      testWebsiteName.push('Baidu');
+      testWebsiteName.push('Qq');
+      testWebsiteName.push('Sohu');
+      // testWebsiteName.push('LoginTmall');
+      testWebsiteName.push('Taobao');
+      testWebsiteName.push('360');
+      testWebsiteName.push('Jd');
+
+
+      testWebsiteFrame.push(500);//Google
+      testWebsiteFrame.push(500);//Youtube
+      testWebsiteFrame.push(2000);//Tmall
+      testWebsiteFrame.push(500);//Baidu
+      testWebsiteFrame.push(2000);//Qq
+      testWebsiteFrame.push(2000);//Sohu
+      // testWebsiteFrame.push(2000);//LT
+      testWebsiteFrame.push(2000);//Taobao
+      testWebsiteFrame.push(2000);//360
+      testWebsiteFrame.push(2000);//Jd
+            // for (let i = 0; i <=40; i++)
+      //   iframeelement[i] = document.getElementById('testiframe' + i);
+         // testWebsite.push('https://www.google.com/');
+         testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+         // testWebsite.push('https://www.youtube.com/');
+         testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+         testWebsite.push('https://www.tmall.com/');
+         testWebsite.push('https://www.baidu.com/');
+         testWebsite.push('https://www.qq.com/');
+         testWebsite.push('https://www.sohu.com/');
+         // testWebsite.push('https://login.tmall.com/');
+         testWebsite.push('https://www.taobao.com/');
+         testWebsite.push('https://www.360.cn/');
+         testWebsite.push('https://www.jd.com/?country=USA');
+   
+   
+         testWebsiteName.push('Google');
+         testWebsiteName.push('Youtube');
+         testWebsiteName.push('Tmall');
+         testWebsiteName.push('Baidu');
+         testWebsiteName.push('Qq');
+         testWebsiteName.push('Sohu');
+         // testWebsiteName.push('LoginTmall');
+         testWebsiteName.push('Taobao');
+         testWebsiteName.push('360');
+         testWebsiteName.push('Jd');
+   
+   
+         testWebsiteFrame.push(500);//Google
+         testWebsiteFrame.push(500);//Youtube
+         testWebsiteFrame.push(2000);//Tmall
+         testWebsiteFrame.push(500);//Baidu
+         testWebsiteFrame.push(2000);//Qq
+         testWebsiteFrame.push(2000);//Sohu
+         // testWebsiteFrame.push(2000);//LT
+         testWebsiteFrame.push(2000);//Taobao
+         testWebsiteFrame.push(2000);//360
+         testWebsiteFrame.push(2000);//Jd
+            // testWebsite.push('https://www.google.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+      // testWebsite.push('https://www.youtube.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+      testWebsite.push('https://www.tmall.com/');
+      testWebsite.push('https://www.baidu.com/');
+      testWebsite.push('https://www.qq.com/');
+      testWebsite.push('https://www.sohu.com/');
+      // testWebsite.push('https://login.tmall.com/');
+      testWebsite.push('https://www.taobao.com/');
+      testWebsite.push('https://www.360.cn/');
+      testWebsite.push('https://www.jd.com/?country=USA');
+
+
+      testWebsiteName.push('Google');
+      testWebsiteName.push('Youtube');
+      testWebsiteName.push('Tmall');
+      testWebsiteName.push('Baidu');
+      testWebsiteName.push('Qq');
+      testWebsiteName.push('Sohu');
+      // testWebsiteName.push('LoginTmall');
+      testWebsiteName.push('Taobao');
+      testWebsiteName.push('360');
+      testWebsiteName.push('Jd');
+
+
+      testWebsiteFrame.push(500);//Google
+      testWebsiteFrame.push(500);//Youtube
+      testWebsiteFrame.push(2000);//Tmall
+      testWebsiteFrame.push(500);//Baidu
+      testWebsiteFrame.push(2000);//Qq
+      testWebsiteFrame.push(2000);//Sohu
+      // testWebsiteFrame.push(2000);//LT
+      testWebsiteFrame.push(2000);//Taobao
+      testWebsiteFrame.push(2000);//360
+      testWebsiteFrame.push(2000);//Jd
+         // testWebsite.push('https://www.google.com/');
+         testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+         // testWebsite.push('https://www.youtube.com/');
+         testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+         testWebsite.push('https://www.tmall.com/');
+         testWebsite.push('https://www.baidu.com/');
+         testWebsite.push('https://www.qq.com/');
+         testWebsite.push('https://www.sohu.com/');
+         // testWebsite.push('https://login.tmall.com/');
+         testWebsite.push('https://www.taobao.com/');
+         testWebsite.push('https://www.360.cn/');
+         testWebsite.push('https://www.jd.com/?country=USA');
+   
+   
+         testWebsiteName.push('Google');
+         testWebsiteName.push('Youtube');
+         testWebsiteName.push('Tmall');
+         testWebsiteName.push('Baidu');
+         testWebsiteName.push('Qq');
+         testWebsiteName.push('Sohu');
+         // testWebsiteName.push('LoginTmall');
+         testWebsiteName.push('Taobao');
+         testWebsiteName.push('360');
+         testWebsiteName.push('Jd');
+   
+   
+         testWebsiteFrame.push(500);//Google
+         testWebsiteFrame.push(500);//Youtube
+         testWebsiteFrame.push(2000);//Tmall
+         testWebsiteFrame.push(500);//Baidu
+         testWebsiteFrame.push(2000);//Qq
+         testWebsiteFrame.push(2000);//Sohu
+         // testWebsiteFrame.push(2000);//LT
+         testWebsiteFrame.push(2000);//Taobao
+         testWebsiteFrame.push(2000);//360
+         testWebsiteFrame.push(2000);//Jd
+            // testWebsite.push('https://www.google.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+      // testWebsite.push('https://www.youtube.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+      testWebsite.push('https://www.tmall.com/');
+      testWebsite.push('https://www.baidu.com/');
+      testWebsite.push('https://www.qq.com/');
+      testWebsite.push('https://www.sohu.com/');
+      // testWebsite.push('https://login.tmall.com/');
+      testWebsite.push('https://www.taobao.com/');
+      testWebsite.push('https://www.360.cn/');
+      testWebsite.push('https://www.jd.com/?country=USA');
+
+
+      testWebsiteName.push('Google');
+      testWebsiteName.push('Youtube');
+      testWebsiteName.push('Tmall');
+      testWebsiteName.push('Baidu');
+      testWebsiteName.push('Qq');
+      testWebsiteName.push('Sohu');
+      // testWebsiteName.push('LoginTmall');
+      testWebsiteName.push('Taobao');
+      testWebsiteName.push('360');
+      testWebsiteName.push('Jd');
+
+
+      testWebsiteFrame.push(500);//Google
+      testWebsiteFrame.push(500);//Youtube
+      testWebsiteFrame.push(2000);//Tmall
+      testWebsiteFrame.push(500);//Baidu
+      testWebsiteFrame.push(2000);//Qq
+      testWebsiteFrame.push(2000);//Sohu
+      // testWebsiteFrame.push(2000);//LT
+      testWebsiteFrame.push(2000);//Taobao
+      testWebsiteFrame.push(2000);//360
+      testWebsiteFrame.push(2000);//Jd
+         // testWebsite.push('https://www.google.com/');
+         testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+         // testWebsite.push('https://www.youtube.com/');
+         testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+         testWebsite.push('https://www.tmall.com/');
+         testWebsite.push('https://www.baidu.com/');
+         testWebsite.push('https://www.qq.com/');
+         testWebsite.push('https://www.sohu.com/');
+         // testWebsite.push('https://login.tmall.com/');
+         testWebsite.push('https://www.taobao.com/');
+         testWebsite.push('https://www.360.cn/');
+         testWebsite.push('https://www.jd.com/?country=USA');
+   
+   
+         testWebsiteName.push('Google');
+         testWebsiteName.push('Youtube');
+         testWebsiteName.push('Tmall');
+         testWebsiteName.push('Baidu');
+         testWebsiteName.push('Qq');
+         testWebsiteName.push('Sohu');
+         // testWebsiteName.push('LoginTmall');
+         testWebsiteName.push('Taobao');
+         testWebsiteName.push('360');
+         testWebsiteName.push('Jd');
+   
+   
+         testWebsiteFrame.push(500);//Google
+         testWebsiteFrame.push(500);//Youtube
+         testWebsiteFrame.push(2000);//Tmall
+         testWebsiteFrame.push(500);//Baidu
+         testWebsiteFrame.push(2000);//Qq
+         testWebsiteFrame.push(2000);//Sohu
+         // testWebsiteFrame.push(2000);//LT
+         testWebsiteFrame.push(2000);//Taobao
+         testWebsiteFrame.push(2000);//360
+         testWebsiteFrame.push(2000);//Jd
+         
+      
+      // testWebsite.push('https://www.google.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+      // testWebsite.push('https://www.youtube.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+      testWebsite.push('https://www.tmall.com/');
+      testWebsite.push('https://www.baidu.com/');
+      testWebsite.push('https://www.qq.com/');
+      testWebsite.push('https://www.sohu.com/');
+      // testWebsite.push('https://login.tmall.com/');
+      testWebsite.push('https://www.taobao.com/');
+      testWebsite.push('https://www.360.cn/');
+      testWebsite.push('https://www.jd.com/?country=USA');
+
+
+      testWebsiteName.push('Google');
+      testWebsiteName.push('Youtube');
+      testWebsiteName.push('Tmall');
+      testWebsiteName.push('Baidu');
+      testWebsiteName.push('Qq');
+      testWebsiteName.push('Sohu');
+      // testWebsiteName.push('LoginTmall');
+      testWebsiteName.push('Taobao');
+      testWebsiteName.push('360');
+      testWebsiteName.push('Jd');
+
+
+      testWebsiteFrame.push(500);//Google
+      testWebsiteFrame.push(500);//Youtube
+      testWebsiteFrame.push(2000);//Tmall
+      testWebsiteFrame.push(500);//Baidu
+      testWebsiteFrame.push(2000);//Qq
+      testWebsiteFrame.push(2000);//Sohu
+      // testWebsiteFrame.push(2000);//LT
+      testWebsiteFrame.push(2000);//Taobao
+      testWebsiteFrame.push(2000);//360
+      testWebsiteFrame.push(2000);//Jd
+            // for (let i = 0; i <=40; i++)
+      //   iframeelement[i] = document.getElementById('testiframe' + i);
+      
+      // testWebsite.push('https://www.google.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+      // testWebsite.push('https://www.youtube.com/');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+      testWebsite.push('https://www.tmall.com/');
+      testWebsite.push('https://www.baidu.com/');
+      testWebsite.push('https://www.qq.com/');
+      testWebsite.push('https://www.sohu.com/');
+      // testWebsite.push('https://login.tmall.com/');
+      testWebsite.push('https://www.taobao.com/');
+      testWebsite.push('https://www.360.cn/');
+      testWebsite.push('https://www.jd.com/?country=USA');
+
+
+      testWebsiteName.push('Google');
+      testWebsiteName.push('Youtube');
+      testWebsiteName.push('Tmall');
+      testWebsiteName.push('Baidu');
+      testWebsiteName.push('Qq');
+      testWebsiteName.push('Sohu');
+      // testWebsiteName.push('LoginTmall');
+      testWebsiteName.push('Taobao');
+      testWebsiteName.push('360');
+      testWebsiteName.push('Jd');
+
+
+      testWebsiteFrame.push(500);//Google
+      testWebsiteFrame.push(500);//Youtube
+      testWebsiteFrame.push(2000);//Tmall
+      testWebsiteFrame.push(500);//Baidu
+      testWebsiteFrame.push(2000);//Qq
+      testWebsiteFrame.push(2000);//Sohu
+      // testWebsiteFrame.push(2000);//LT
+      testWebsiteFrame.push(2000);//Taobao
+      testWebsiteFrame.push(2000);//360
+      testWebsiteFrame.push(2000);//Jd
+      testWebsiteNumber = testWebsite.length;
+      console.log(testWebsite);
+      console.log(testWebsiteName);
+    }
+    
+    /**********************************************************************************************/ 
+
+
+    /**********************************************************************************************/
+    //adjust workload
+    var aveAdjustArray;
+    const Average = arr => arr.reduce((acc, val) => acc + val, 0) / arr.length;
+    if (frameCount == 10)
+      g_numFishNumber = 7;
+
+    if (startCollectFrame == 0){
+      console.log("In the function");
+      if ((frameCount - startAdjustFrame) > 20)
+       adjustArray.push(recorddata);
+    
+      if ((frameCount - startAdjustFrame) == 50){
+        startAdjustFrame = frameCount;
+        aveAdjustArray = Average(adjustArray);
+        console.log("adjustArray",adjustArray);
+        adjustArray = [];
+        // if ((aveAdjustArray > 25) && (aveAdjustArray < 33) || (g_numFishNumber == 0)){
+        if ((aveAdjustArray > 25) && (aveAdjustArray < 33) || (g_numFishNumber == 0)){
+          startCollectFrame = frameCount;
+          startframe = startCollectFrame + 100;
+          trans_load_flag = 0;
+          trans_state = 0;
+        }
+          
+        else if (aveAdjustArray > 28)
+          g_numFishNumber --;
+        else
+          g_numFishNumber ++;
+        
+        console.log("aveAdjustArray",aveAdjustArray);
+        console.log("startCollectFrame",startCollectFrame);
+        console.log("g_numFishNumber",g_numFishNumber);
+      }
+    }else if (testWebsiteID < testWebsite.length){
+
+
+          // console.log("in the state part");
+          // console.log("trans_load_flag",trans_load_flag);
+          // console.log("trans_state",trans_state);
+          /**********************************************************************************************/
+
+          /**********************************************************************************************/
+          // record the data
+          //0->1 2->3 4->5 6->7
+          if ((trans_load_flag == 1)){
+            trans_state += 1;
+            trans_load_flag = 0;
+            // startframe = frameCount;
+          }
+          if (frameCount - startframe > testWebsiteFrame[testWebsiteID]){
+            startframe = frameCount;
+            trans_state += 1;
+            trans_load_flag = 0;
+          }
+
+          var iframe_line = testWebsite[testWebsiteID];
+          // if (frameCount == startframe){
+          if (trans_state == 0){
+            // iframeelement[4 * testWebsiteID + 1].src = iframe_line;
+            testWindow = window.open(iframe_line);
+            // trans_load_flag = 0;
+            trans_state += 1;
+            // console.log("change the src");
+            startframe = frameCount;
+          }
+
+          // if (frameCount == startframe + courtframe - 10){
+          if (trans_state == 2){
+            // iframeelement[4 * testWebsiteID + 1].parentNode.removeChild(iframeelement[4 * testWebsiteID + 1]);
+            // trans_load_flag = 0;
+            testWindow.close();
+          }
+
+          if (trans_state == 3){
+          // if (frameCount == startframe + courtframe){
+            // iframeelement[4 * testWebsiteID + 2].src = iframe_line;
+            // trans_load_flag = 0;
+            testWindow = window.open(iframe_line);
+            trans_state += 1;
+            startframe = frameCount;
+          }
+
+          if (trans_state == 5){
+          // if (frameCount == startframe + courtframe * 2 - 10){
+            // iframeelement[4 * testWebsiteID + 2].parentNode.removeChild(iframeelement[4 * testWebsiteID + 2]);
+            // trans_load_flag = 0;
+            testWindow.close();
+          }
+
+          if (trans_state == 6){
+          // if (frameCount == startframe + courtframe * 2){  
+            // iframeelement[4 * testWebsiteID + 3].src = iframe_line;
+            testWindow = window.open(iframe_line);
+            // trans_load_flag = 0;
+            trans_state += 1;
+            startframe = frameCount;
+          }
+
+          if (trans_state == 8){
+          // if (frameCount == startframe + courtframe * 3 - 10){
+            // iframeelement[4 * testWebsiteID + 3].parentNode.removeChild(iframeelement[4 * testWebsiteID + 3]);
+            testWindow.close();
+          }
+
+          if (trans_state == 9){
+          // if (frameCount == startframe + courtframe * 3){  
+            // iframeelement[4 * testWebsiteID + 4].src = iframe_line;
+            testWindow = window.open(iframe_line);
+            // trans_load_flag = 0;
+            trans_state += 1;
+            startframe = frameCount;
+          }
+
+          if (trans_state == 11){
+          // if (frameCount == startframe + courtframe * 4 - 10){
+            // iframeelement[4 * testWebsiteID + 4].parentNode.removeChild(iframeelement[4 * testWebsiteID + 4]);
+            testWindow.close();
+          }
+
+          if (trans_state == 1){
+            let temValue = Math.round(recorddata*100)/100;
+            // temValue = temValue / 100;
+            // if (temValue == 1)
+            //   temValue = 0;
+            test_data1.push(temValue);
+            // console.log(temValue);
+          }
+          if (trans_state == 4){
+            let temValue = Math.round(recorddata*100)/100;
+            // temValue = temValue / 100;
+            // if (temValue == 1)
+            //   temValue = 0;
+            test_data2.push(temValue);
+          }
+          if (trans_state == 7){
+            let temValue = Math.round(recorddata*100)/100;
+            // temValue = temValue / 100;
+            // if (temValue == 1)
+            //   temValue = 0;
+            test_data3.push(temValue);
+          }
+          if (trans_state == 10){
+            let temValue = Math.round(recorddata*100)/100;
+            // temValue = temValue / 100;
+            // if (temValue == 1)
+            //   temValue = 0;
+            test_data4.push(temValue);
+          }
+
+          if (trans_state % 3 == 2)
+            trans_state += 1;
+
+
+          // if (trans_load_flag == 0){
+          //   if ((frameCount > startframe) && (frameCount <= (startframe + courtframe - 10))){
+          //     test_data1.push(Math.round(recorddata*100)/100);
+          //   }
+          //   if ((frameCount > startframe + courtframe) && (frameCount <= (startframe + courtframe * 2 - 10))){
+          //     test_data2.push(Math.round(recorddata*100)/100);
+          //   }
+          //   if ((frameCount > startframe + courtframe * 2) && (frameCount <= (startframe + courtframe * 3 - 10))){
+          //     test_data3.push(Math.round(recorddata*100)/100);
+          //   }
+          //   if ((frameCount > startframe + courtframe * 3) && (frameCount <= (startframe + courtframe * 4 - 10))){
+          //     test_data4.push(Math.round(recorddata*100)/100);
+          //   }
+          // }
+          
+
+
+
+          /**********************************************************************************************/
+          //post data
+          // if (frameCount == (startframe + courtframe * 4 - 10)){ 
+          if (trans_state == 12){  
+            //reset
+            trans_state = 0;
+            let sendData = [];
+            sendData.push(test_data1,test_data2,test_data3,test_data4);
+            testData.push(sendData)
+            test_data1 = [];
+            test_data2 = [];
+            test_data3 = [];
+            test_data4 = [];
+            startframe = frameCount + 10;
+            testWebsiteID ++;
+            console.log("sendData",sendData);
+            console.log("post_data5",testWebsiteName[testWebsiteID - 1])
+            console.log("testWebsiteID",testWebsiteID);
+            console.log("testWebsiteName.lenght",testWebsiteName.length);
+            if (testWebsiteID == testWebsiteName.length)
+              analyzeFlag = 1;
+            console.log("analyzeFlag",analyzeFlag);
+            $.post("/server_test",{"post_data1":sendData[0], "post_data2":sendData[1],"post_data3":sendData[2],"post_data4":sendData[3], "post_data5":testWebsiteName[testWebsiteID - 1]},function(data,status)
+            {
+                console.log("sent");
+                var tmp = data;            
+                console.log(data.otstr);  
+                console.log("v1");                   
+            });  
+
+          } 
+
     }
 
-    if( (frameCount > 500) && (frameCount < 800))
-      test_data1.push(Math.round(recorddata*100)/100);
-    
-    if (frameCount == 800){
-      $.post("/server_test_twowindow",{"post_data1":test_data1},function(data,status)
-      {
-          console.log("sent");
-          var tmp = data;            
-          console.log(data.otstr);                     
-      });  
-    } 
-    
 
+    /**********************************************************************************************/
+    //Analyze Data
+    if (analyzeFlag == 1){
+      console.log("Analyze Data");
+      for (let i = 0; i < testWebsiteName.length; i++){
+        test_data1 = testData[i][0];
+        test_data2 = testData[i][1];
+        test_data3 = testData[i][2];
+        test_data4 = testData[i][3];
+        let temA1 = test_data1.concat(test_data2);
+        let temA2 = temA1.concat(test_data3);
+        temA1 = temA2.concat(test_data4);
+        temA2 = temA1.sort(sortNumber);
+        console.log("test_data1",test_data1);
+        TorAnalyze(test_data1);
+        console.log("test_data2",test_data2);
+        TorAnalyze(test_data2);
+        console.log("test_data3",test_data3);
+        TorAnalyze(test_data3);
+        console.log("test_data4",test_data4);
+        TorAnalyze(test_data4);
+        // console.log("test_data1",test_data1);
+        // console.log("test_data2",test_data2);
+        // console.log("test_data3",test_data3);
+        // console.log("test_data4",test_data4);
+        // console.log("temA1",temA1);
+        // console.log("temA2",temA2);
+        var aveMid = temA2[ Math.floor(temA2.length * 0.975)];  //3
+        var aveLow = temA2[ Math.floor(temA2.length * 0.475)];  //0
+        console.log(aveLow);
+        console.log(aveMid);
+        for (let i = 0; i < test_data1.length; i++)
+          if (test_data1[i] < aveLow)
+            test_data1[i] = 0;
+          else  
+            test_data1[i] = (test_data1[i] - aveLow) / (aveMid - aveLow) * 3;
+        
+        for (let i = 0; i < test_data2.length; i++)
+        if (test_data2[i] < aveLow)
+          test_data2[i] = 0;
+        else  
+          test_data2[i] = (test_data2[i] - aveLow) / (aveMid - aveLow) * 3;
+
+        for (let i = 0; i < test_data3.length; i++)
+        if (test_data3[i] < aveLow)
+          test_data3[i] = 0;
+        else  
+          test_data3[i] = (test_data3[i] - aveLow) / (aveMid - aveLow) * 3;
+
+
+        for (let i = 0; i < test_data4.length; i++)
+        if (test_data4[i] < aveLow)
+          test_data4[i] = 0;
+        else  
+          test_data4[i] = (test_data4[i] - aveLow) / (aveMid - aveLow) * 3;
+
+
+        // console.log("test_data1", test_data1);
+        // console.log("test_data2", test_data2);
+        // console.log("test_data3", test_data3);
+        
+        
+        
+        
+        let controlDistance1 = DTW(test_data2,test_data3);
+        let controlDistance2 = DTW(test_data2,test_data4);
+        let controlDistance3 = DTW(test_data3,test_data4);
+        let testDistance1 = DTW(test_data1,test_data2);
+        let testDistance2 = DTW(test_data1,test_data2);
+        let testDistance3 = DTW(test_data1,test_data3);
+        console.log("Results:");
+        console.log("TestWebsite: ", testWebsiteName[i]);
+        console.log("Ave_Control:", (controlDistance1 + controlDistance2 + controlDistance3) / 3.0);
+        console.log("Ave_Test:   ", (testDistance1 + testDistance2 + testDistance3) / 3.0);
+        console.log("Rate:       ", (testDistance1 + testDistance2 + testDistance3)/(controlDistance1 + controlDistance2 + controlDistance3));
+        console.log("Detail:     ", controlDistance1, controlDistance2, controlDistance3, testDistance1, testDistance2, testDistance3);
+        
+      }
       
+      analyzeFlag = 0;
 
 
-    // var iframeelement1 = document.getElementById('testiframe1');
-    // var iframeelement1 = document.getElementById('testiframe1');
-    // var iframeelement2 = document.getElementById('testiframe2');
-    // var iframeelement3 = document.getElementById('testiframe3');
-    // var iframeelement4 = document.getElementById('testiframe4');
+    }
+    function TorAnalyze(testArray){
+      var value0 = 0;
+      var value1 = 0;
+      var value2 = 0;
+      var value3 = 0;
+      console.log(testArray);
+      for (let i = 0; i < testArray.length; i++){
+        if (testArray[i] == 0)
+          value0 ++;
+        if (testArray[i] == 100)
+          value1 ++;
+        if (testArray[i] == 200)
+          value2 ++;
+        if (testArray[i] == 300)
+          value3 ++;
+      if (i == 20)
+        console.log("20:", value0, value1, value2, value3);
+      if (i == 40)
+        console.log("40:", value0, value1, value2, value3);
+      if (i == 60)
+        console.log("60:", value0, value1, value2, value3);
+      if (i == 100)
+        console.log("100:", value0, value1, value2, value3);
+      if (i == 120)
+        console.log("120:", value0, value1, value2, value3);
+      if (i == 140)
+        console.log("140:", value0, value1, value2, value3);
+      if (i == 160)
+        console.log("160:", value0, value1, value2, value3);
+
+      }
+      console.log("All:", value0, value1, value2, value3);
+    }
+
+    function sortNumber(a,b)
+    {
+      return a - b
+    }
+
+    function DTW(Q, C){
+      var m = Q.length;
+      var n = C.length;
+      // console.log("Q", Q);
+      // console.log("C", C);
+      var distanceMap = [];
+      var DTWMap = [];
+      for (let j = 0; j < n; j++){
+        var temAttay = [];
+        for (let i = 0; i < m; i++){
+          let temDistance = Math.abs(Q[i] - C[j]) * (Math.abs(i - j) + 1);
+          temAttay.push(temDistance);
+        }
+        distanceMap.push(temAttay);
+        DTWMap.push(temAttay);
+      }
+      // console.log("distanceMap", distanceMap);
+      for (let j = 0; j < n; j++){
+        for (let i = 0; i < m; i++){
+          if ((i != 0) && (j != 0)){
+            let value1 = DTWMap[j-1][i] + distanceMap[j][i];
+            let value2 = DTWMap[j][i-1] + distanceMap[j][i];
+            let value3 = DTWMap[j-1][i-1] + distanceMap[j][i] * 2;
+            DTWMap[j][i] = Math.min(value1, value2, value3);
+          }
+        }
+      }
+      // console.log("DTWMap", DTWMap);
+      return (DTWMap[n-1][m-1]);
+
+    }
     
-    // var startframe = 500;
-    // var courtframe = 100;
-
-    /**********************************************************************************************/
-    //change the link
-    // if (frameCount == startframe){
-    //   iframeelement1.src = "http://18.190.132.90/index.php?q=https%3A%2F%2Fwww.youtube.com%2F";
-    // }
-    // if (frameCount == startframe + courtframe - 10){
-    //   iframeelement1.parentNode.removeChild(iframeelement1);
-    // }
-    // if (frameCount == startframe + courtframe){
-    // // console.log(iframeelement);
-    //   iframeelement2.src = "http://18.190.132.90/index.php?q=https%3A%2F%2Fwww.youtube.com%2F";
-    // }
-    // if (frameCount == startframe + courtframe * 2 - 10){
-    //   iframeelement2.parentNode.removeChild(iframeelement2);
-    // }
-    // if (frameCount == startframe + courtframe * 2){  
-    //   iframeelement3.src = "http://18.190.132.90/index.php?q=https%3A%2F%2Fwww.youtube.com%2F";
-    // }
-    // if (frameCount == startframe + courtframe * 3 - 10){
-    //   iframeelement3.parentNode.removeChild(iframeelement3);
-    // }
-    // if (frameCount == startframe + courtframe * 3){  
-    //   iframeelement4.src = "http://18.190.132.90/index.php?q=https%3A%2F%2Fwww.youtube.com%2F";
-    // }
-
-    /**********************************************************************************************/
-
-    /**********************************************************************************************/
-    // record the data
-    // if ((frameCount > startframe) && (frameCount <= (startframe + courtframe - 10))){
-    //   test_data1.push(Math.round(recorddata*100)/100);
-    // }
-    // if ((frameCount > startframe + courtframe) && (frameCount <= (startframe + courtframe * 2 - 10))){
-    //   test_data2.push(Math.round(recorddata*100)/100);
-    // }
-    // if ((frameCount > startframe + courtframe * 2) && (frameCount <= (startframe + courtframe * 3 - 10))){
-    //   test_data3.push(Math.round(recorddata*100)/100);
-    // }
-    // if ((frameCount > startframe + courtframe * 3) && (frameCount <= (startframe + courtframe * 4 - 10))){
-    //   test_data4.push(Math.round(recorddata*100)/100);
-    // }
 
 
-    /**********************************************************************************************/
-    //post data
-    /*
-    if (frameCount == (startframe + courtframe * 4 - 10)){
-      $.post("/server_test",{"post_data1":test_data1, "post_data2":test_data2,"post_data3":test_data3,"post_data4":test_data4},function(data,status)
-      {
-          console.log("sent");
-          var tmp = data;            
-          console.log(data.otstr);                     
-      });  
-    } 
-    */
-
-    // console.log('test_demo, two window')
 
 
 
@@ -2338,6 +2942,7 @@ $(function(){
   }
 
   function initPostDOMLoaded() {
+    console.log("in the initPostDOMLoaded");
     if (g_aquariumConfig.enableVR) {
       if(navigator.getVRDisplays) {
         g_frameData = new VRFrameData();

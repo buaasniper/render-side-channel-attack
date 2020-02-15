@@ -48,7 +48,7 @@ var g_sceneGroups = {};  // the placement of the models
 var g_fog = true;
 //yujianjia
 // var g_numFish = [1, 10, 30000, 15000, 15000, 10000, 15000, 20000, 25000, 30000];
-var g_numFish = [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000];
+var g_numFish = [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000,55000, 60000, 65000, 70000, 75000, 80000, 85000, 90000, 95000, 10000, 11000];
 var g_numFishNumber = 0;
 
 var g_stereoDemoActive = false;
@@ -1750,6 +1750,8 @@ function initialize() {
   var testWebsiteName = [];
   var testData = []; // Analyzed data
   var analyzeFlag = 0;
+  var testDataArray = [];
+  var trans_state = 0;
 
   
   function onAnimationFrame() {
@@ -1817,26 +1819,27 @@ function initialize() {
         iframeelement[i] = document.getElementById('testiframe' + i);
       
       // testWebsite.push('https://www.google.com/');
-      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+      // testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
       // testWebsite.push('https://www.youtube.com/');
-      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
-      testWebsite.push('https://www.tmall.com/');
-      testWebsite.push('https://www.baidu.com/');
-      testWebsite.push('https://www.qq.com/');
-      testWebsite.push('https://www.sohu.com/');
+      // testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+      // testWebsite.push('https://www.tmall.com/');
+      // testWebsite.push('https://www.baidu.com/');
+      // testWebsite.push('https://www.qq.com/');
+      // testWebsite.push('https://www.sohu.com/');
+      // testWebsite.push('http://images.sohu.com/bill/s2017/front/tb/fsy3_tb.html#1499741353#1504158978#1506308002#1509429866#1512007848#1520310463?clkm=%2F%2Fi.go.sohu.com%2Fcount%2Fc%3Fsource%3D0%26newsid%3D%26subid%3D%26aid%3D102568555%26apid%3Dbeans_15540%26impid%3D0aa905ca05a7e22ae_0_0%26mkey%3D0aa905ca05a7e22ae_0_0%26freq%3D0%26ax%3D890%26ay%3D2975%26ed%3D%26bucket%3D%26ext%3De%253Dh08rLUsRNsgVTkgOCQ56hEWFQVv5gu9N6Mkpr6QNdUcz%252B6sB92JiQQmpiAEa88PMMLzmxQnrGLf4OSjUd5ORZvdbDXDcOaHuGsYbNO4Ywcs%252FgcYrKLXAKN7o9qjPlfcpArOh%252B%252BFgZbWGyHsNnOUtD%252Ff%252FwKRUvysGFH%252BuSAqgbMcFb3AoyW2k76fp%252F6zS2GmHJBuZ155bWpj%252FLj4%252F76LnyTwvDXOwSIGBYBRD2oip4M%252F6mGRZYLMZnF0VOnyB9%252BxGod0okgbCekAEYu7dSv9V5%252Fic%252FUuPGWRD1DHdwOYBE6ujE5zwvC6Fw3MMAKlq6pqP%252FePrNrBOscAL043QagXquoiadehtfsYaCSM2VOgZyqCO5zL2RAUOq%252BspeU0iZT2p3zryNMrh1KOp01hPH2wLoQfRzHkGPdbAGg7o0cZPo69I6cG6EAhoJecBo9%252BQ4bOg%252FVrfr8iN93fZJraBC7NF9qH7ylqsZ2eAumAWFAF%252FHgAIZIYyTzeOIIVSWsZ%252BnqchZx%252FILvCJTkcwUFa7DNSDuCvxTH8vLJso%252BMmzdtwbSJ5vheuHXPReeCKk1VIdY7%252BkCrAKKwpq0mn8AHyRoZhXY1PHpQ8SMi3%252Bkca05jce%252FqRvywju%252BegjFZ7DvHPQLhs8HxFLLAZsNwLi1bm%252BfZK3hmL6VfByBCwYlfQv%252BNC6ZxQsEzSdzY2fRcldD9wflqJ6OQGRc5b%252FuiGYCfqF8LvUB1jvl7%252BCsq4cDK%252F0iagJcMyk%252F1WPO%252BNPJ9pf%252BDERujCvLkpk8zLGYZezfsytet%252BFRPNZHdDeZ9i1xB%252B%252BjfwWtyadSG1Rjng%252FBJQzSpYJtzOfj6T2rPGLawLV94NlokR5R1kjCmfnekoiuO%252FXlORpIG%252FGCTsjRhIdzah5CEukfDyjNWjZIYWLk0K2IoxUcR7u8m6G9mm%252BTn6Vp3YSvoo0OQE%253D%2509tt2%253D1581434946282%2509turn%253D1%2509geoid1%253D1826000000%2509geoid2%253D1840000000%2509tv%255Fadx%253D%2509source%253Dshjtsybxpsyq%26uloc%3D%26turn%3D1%26sf%3D0%26newschn%3D1000000000%26pgid%3Dsohu-index%26shbd_monitor_ext%3Dc%26latcy%3D4%26position%3D%26at%3D1%26supplyid%3D1%26timestamp%3D1581434946464%26r%3D0.5232222278950798%26rsln%3D2560*1080%26smuid%3D%26suv%3D1912050242421JQH%26pagerefer%3D%26appid%3Dpcnews');
       // testWebsite.push('https://login.tmall.com/');
-      testWebsite.push('https://www.taobao.com/');
-      testWebsite.push('https://www.360.cn/');
+      // testWebsite.push('https://www.taobao.com/');
+      // testWebsite.push('https://www.360.cn/');
       testWebsite.push('https://www.jd.com/?country=USA');
-      testWebsiteName.push('Google');
-      testWebsiteName.push('Youtube');
-      testWebsiteName.push('Tmall');
-      testWebsiteName.push('Baidu');
-      testWebsiteName.push('Qq');
-      testWebsiteName.push('Sohu');
+      // testWebsiteName.push('Google');
+      // testWebsiteName.push('Youtube');
+      // testWebsiteName.push('Tmall');
+      // testWebsiteName.push('Baidu');
+      // testWebsiteName.push('Qq');
+      // testWebsiteName.push('Sohu');
       // testWebsiteName.push('LoginTmall');
-      testWebsiteName.push('Taobao');
-      testWebsiteName.push('360');
+      // testWebsiteName.push('Taobao');
+      // testWebsiteName.push('360');
       testWebsiteName.push('Jd');
       testWebsiteNumber = testWebsite.length;
       console.log(testWebsite);
@@ -1851,7 +1854,7 @@ function initialize() {
     var aveAdjustArray;
     const Average = arr => arr.reduce((acc, val) => acc + val, 0) / arr.length;
     if (frameCount == 10)
-      g_numFishNumber = 7;
+      g_numFishNumber = 13;
 
     if (startCollectFrame == 0){
       console.log("In the function");
@@ -1863,9 +1866,12 @@ function initialize() {
         aveAdjustArray = Average(adjustArray);
         console.log("adjustArray",adjustArray);
         adjustArray = [];
+        // if ((aveAdjustArray > 25) && (aveAdjustArray < 33) || (g_numFishNumber == 0)){
         if ((aveAdjustArray > 25) && (aveAdjustArray < 33) || (g_numFishNumber == 0)){
           startCollectFrame = frameCount;
           startframe = startCollectFrame + 100;
+          trans_load_flag = 0;
+          trans_state = 0;
         }
           
         else if (aveAdjustArray > 28)
@@ -1877,71 +1883,127 @@ function initialize() {
         console.log("startCollectFrame",startCollectFrame);
         console.log("g_numFishNumber",g_numFishNumber);
       }
-    }else if (testWebsiteID < testWebsite.length){
+    }
 
+    else if (testWebsiteID < testWebsite.length){
+
+
+          // console.log("in the state part");
+          // console.log("trans_load_flag",trans_load_flag);
+          // console.log("trans_state",trans_state);
           /**********************************************************************************************/
 
           /**********************************************************************************************/
           // record the data
-          courtframe = 400;
-          if (testWebsiteID == 0)
-            courtframe = 150;
-          if (testWebsiteID == 0)
-            countframe = 250;
+          //0->1 2->3 4->5 6->7
+          if ((trans_load_flag == 1)){
+            trans_state += 1;
+            trans_load_flag = 0;
+            // startframe = frameCount;
+          }
+          if (frameCount - startframe > 2000){
+            startframe = frameCount;
+            trans_state += 1;
+            trans_load_flag = 0;
+          }
 
           var iframe_line = testWebsite[testWebsiteID];
-          if (frameCount == startframe){
+          // if (frameCount == startframe){
+          if (trans_state == 0){
             iframeelement[4 * testWebsiteID + 1].src = iframe_line;
-            trans_load_flag = 0;
+            // trans_load_flag = 0;
+            trans_state += 1;
+            // console.log("change the src");
+            startframe = frameCount;
           }
-          if (frameCount == startframe + courtframe - 10){
+
+          // if (frameCount == startframe + courtframe - 10){
+          if (trans_state == 2){
             iframeelement[4 * testWebsiteID + 1].parentNode.removeChild(iframeelement[4 * testWebsiteID + 1]);
+            // trans_load_flag = 0;
           }
-          if (frameCount == startframe + courtframe){
+
+          if (trans_state == 3){
+          // if (frameCount == startframe + courtframe){
             iframeelement[4 * testWebsiteID + 2].src = iframe_line;
-            trans_load_flag = 0;
+            // trans_load_flag = 0;
+            trans_state += 1;
+            startframe = frameCount;
           }
-          if (frameCount == startframe + courtframe * 2 - 10){
+
+          if (trans_state == 5){
+          // if (frameCount == startframe + courtframe * 2 - 10){
             iframeelement[4 * testWebsiteID + 2].parentNode.removeChild(iframeelement[4 * testWebsiteID + 2]);
+            // trans_load_flag = 0;
           }
-          if (frameCount == startframe + courtframe * 2){  
+
+          if (trans_state == 6){
+          // if (frameCount == startframe + courtframe * 2){  
             iframeelement[4 * testWebsiteID + 3].src = iframe_line;
-            trans_load_flag = 0;
+            // trans_load_flag = 0;
+            trans_state += 1;
+            startframe = frameCount;
           }
-          if (frameCount == startframe + courtframe * 3 - 10){
+
+          if (trans_state == 8){
+          // if (frameCount == startframe + courtframe * 3 - 10){
             iframeelement[4 * testWebsiteID + 3].parentNode.removeChild(iframeelement[4 * testWebsiteID + 3]);
           }
-          if (frameCount == startframe + courtframe * 3){  
+
+          if (trans_state == 9){
+          // if (frameCount == startframe + courtframe * 3){  
             iframeelement[4 * testWebsiteID + 4].src = iframe_line;
-            trans_load_flag = 0;
+            // trans_load_flag = 0;
+            trans_state += 1;
+            startframe = frameCount;
           }
-          if (frameCount == startframe + courtframe * 4 - 10){
+
+          if (trans_state == 11){
+          // if (frameCount == startframe + courtframe * 4 - 10){
             iframeelement[4 * testWebsiteID + 4].parentNode.removeChild(iframeelement[4 * testWebsiteID + 4]);
           }
 
-
-          if (trans_load_flag == 0){
-            if ((frameCount > startframe) && (frameCount <= (startframe + courtframe - 10))){
-              test_data1.push(Math.round(recorddata*100)/100);
-            }
-            if ((frameCount > startframe + courtframe) && (frameCount <= (startframe + courtframe * 2 - 10))){
-              test_data2.push(Math.round(recorddata*100)/100);
-            }
-            if ((frameCount > startframe + courtframe * 2) && (frameCount <= (startframe + courtframe * 3 - 10))){
-              test_data3.push(Math.round(recorddata*100)/100);
-            }
-            if ((frameCount > startframe + courtframe * 3) && (frameCount <= (startframe + courtframe * 4 - 10))){
-              test_data4.push(Math.round(recorddata*100)/100);
-            }
+          if (trans_state == 1){
+            test_data1.push(Math.round(recorddata*100)/100);
           }
+          if (trans_state == 4){
+            test_data2.push(Math.round(recorddata*100)/100);
+          }
+          if (trans_state == 7){
+            test_data3.push(Math.round(recorddata*100)/100);
+          }
+          if (trans_state == 10){
+            test_data4.push(Math.round(recorddata*100)/100);
+          }
+
+          if (trans_state % 3 == 2)
+            trans_state += 1;
+
+
+          // if (trans_load_flag == 0){
+          //   if ((frameCount > startframe) && (frameCount <= (startframe + courtframe - 10))){
+          //     test_data1.push(Math.round(recorddata*100)/100);
+          //   }
+          //   if ((frameCount > startframe + courtframe) && (frameCount <= (startframe + courtframe * 2 - 10))){
+          //     test_data2.push(Math.round(recorddata*100)/100);
+          //   }
+          //   if ((frameCount > startframe + courtframe * 2) && (frameCount <= (startframe + courtframe * 3 - 10))){
+          //     test_data3.push(Math.round(recorddata*100)/100);
+          //   }
+          //   if ((frameCount > startframe + courtframe * 3) && (frameCount <= (startframe + courtframe * 4 - 10))){
+          //     test_data4.push(Math.round(recorddata*100)/100);
+          //   }
+          // }
           
 
 
 
           /**********************************************************************************************/
           //post data
-          if (frameCount == (startframe + courtframe * 4 - 10)){   
+          // if (frameCount == (startframe + courtframe * 4 - 10)){ 
+          if (trans_state == 12){  
             //reset
+            trans_state = 0;
             let sendData = [];
             sendData.push(test_data1,test_data2,test_data3,test_data4);
             testData.push(sendData)
