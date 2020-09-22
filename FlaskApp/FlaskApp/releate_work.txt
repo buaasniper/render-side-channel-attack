@@ -1,0 +1,68 @@
+Releate work
+
+1. Robust Website Fingerprinting Through the Cache Occupancy Channel
+infer --> other tabes of same browser, or even in other browsers.
+analyze --> CNN and LSTM
+
+=================================================================
+The Prime+Probe Technique
+measures contentions in specific cache sets
+=================================================================
+Cache Occupancy Channel
+allocates an LLC-sized buffer and measures the time to access the entire buffer
+The victim’s access to memory evicts the contents of our buffer from the cache, introducing delays for our access.
+the time to access our buffer is roughly proportional to the number of cache lines that the victim uses.
+-->low resolution timer
+
+
+other browser
+use a JavaScript-based memorygrammer to probe the cache at a fixed rate of one sample every 2 ms
+30s --> 15000 data 
+tor browser
+100ms sweap count number
+50s --> 25000 data
+
+closed world datasets
+100 times --> 100 website 
+
+open world datasets
+new 5000   33.3%
+
+
+cross-tab scenario
+1. carried out on the same browser
+2. two different browsers belonging to the same user
+3. two browsers residing in two completely isolated virtual machines
+
+
+
+*******************************************************************************
+2. Template Attacks
+not releated ？？
+break the cryptographic algorithms
+
+
+*******************************************************************************
+3. Stealing Webpages Rendered on Your Browser by Exploiting GPU Vulnerabilities
+partially releated
+weak attack models
+assume a system that equips a GPU for graphics operations and computations. The system is a multi-user system so that a number of users can share the equipped GPU.
+
+
+
+
+
+
+
+
+*******************************************************************************
+100 * 7  34.3%     10s --> 3000 data     1.5h one times  
+
+1. collect way --> too many noise in the last 30 - 40 websites
+2. each website too little times (2-5 ave)
+3. website list different  alexa -> same websites  10+ 
+
+will do 
+1. test same datasets
+2. try to use CNN and LSTM or other
+

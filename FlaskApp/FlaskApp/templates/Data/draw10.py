@@ -9,7 +9,7 @@ if os.environ.get('DISPLAY','') == '':
     mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
-plt.rcParams.update({'font.size': 18})
+plt.rcParams.update({'font.size': 16})
 
 
 
