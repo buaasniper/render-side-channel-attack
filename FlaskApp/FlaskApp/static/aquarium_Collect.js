@@ -1816,11 +1816,11 @@ function initialize() {
     //init
     /**********************************************************************************************/
     if (frameCount == 10){
-      for (let i = 0; i <=4; i++)
+      for (let i = 0; i <=40; i++)
         iframeelement[i] = document.getElementById('testiframe' + i);
       
-      // testWebsite.push('https://www.google.com/');
-      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
+      testWebsite.push('https://www.google.com/');
+      // testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
       // testWebsite.push('https://www.youtube.com/');
       testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
       testWebsite.push('https://www.tmall.com/');
@@ -1858,14 +1858,14 @@ function initialize() {
       g_numFishNumber = 5;
 
     if (startCollectFrame == 0){
-      console.log("In the function");
+      // console.log("In the function");
       if ((frameCount - startAdjustFrame) > 20)
        adjustArray.push(recorddata);
     
       if ((frameCount - startAdjustFrame) == 50){
         startAdjustFrame = frameCount;
         aveAdjustArray = Average(adjustArray);
-        console.log("adjustArray",adjustArray);
+        // console.log("adjustArray",adjustArray);
         adjustArray = [];
         // if ((aveAdjustArray > 25) && (aveAdjustArray < 33) || (g_numFishNumber == 0)){
         if ((aveAdjustArray > 25) && (aveAdjustArray < 33) || (g_numFishNumber == 0)){
@@ -1880,9 +1880,9 @@ function initialize() {
         else
           g_numFishNumber ++;
         
-        console.log("aveAdjustArray",aveAdjustArray);
-        console.log("startCollectFrame",startCollectFrame);
-        console.log("g_numFishNumber",g_numFishNumber);
+        // console.log("aveAdjustArray",aveAdjustArray);
+        // console.log("startCollectFrame",startCollectFrame);
+        // console.log("g_numFishNumber",g_numFishNumber);
       }
     }
 
@@ -1912,6 +1912,8 @@ function initialize() {
           var iframe_line = testWebsite[testWebsiteID];
           // if (frameCount == startframe){
           if (trans_state == 0){
+            console.log("4 * testWebsiteID + 1",4 * testWebsiteID + 1);
+            console.log(iframeelement[4 * testWebsiteID + 1]);
             iframeelement[4 * testWebsiteID + 1].src = iframe_line;
             // trans_load_flag = 0;
             trans_state += 1;
