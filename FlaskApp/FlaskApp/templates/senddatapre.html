@@ -40,34 +40,14 @@
         <input class="btn" type="submit" name="submit" value="Add">
     </form>
 
-    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    
 	<script>
         function validateFormOnSubmit(theForm) {
         console.log(theForm);
         console.log(submit);
         }
 
-        var student = {
-            email:'123456',
-            phone:'121421421',
-        };
- 
-        var senddata = JSON.stringify(student);
- 
-        console.log(senddata)
-        query();
-        function query() {
-            $.ajax({
-                url: "test_post/nn",
-                type: "POST",
-                data: senddata,
-                dataType: "json",
-                success: function (data) {
-                    console.log(data)
-                }
-            })
-        }
- 
+
  
 	</script>
     

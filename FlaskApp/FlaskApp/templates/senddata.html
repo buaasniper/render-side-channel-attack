@@ -2,8 +2,35 @@
   <head></head>
   <body>
     <h3>Booking page</h3>
+    <div id="content"> Waiting the receive page...</div>
     <p>
       Seleted date: {{ title }}
     </p>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <script>
+        var student = {
+            email:'123456',
+            phone:'121421421',
+        };
+ 
+        var senddata = JSON.stringify(0);
+ 
+        console.log(senddata)
+        query();
+        function query() {
+            $.ajax({
+                url: "test_post/nn",
+                type: "POST",
+                data: senddata,
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    document.getElementById("content").innerHTML = "Start send the message...";
+                }
+            })
+            
+        }
+ 
+    </script>
   </body>
 </html>
