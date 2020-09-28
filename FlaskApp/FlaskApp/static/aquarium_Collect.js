@@ -1822,7 +1822,7 @@ function initialize() {
       testWebsite.push('https://www.google.com/');
       // testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
       // testWebsite.push('https://www.youtube.com/');
-      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com');
+      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com/');
       testWebsite.push('https://www.tmall.com/');
       testWebsite.push('https://www.baidu.com/');
       testWebsite.push('https://www.qq.com/');

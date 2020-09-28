@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, url_for, redirect
 import os,sys
 import time
 import csv
+import json
 '''
 from tinydb import TinyDB, Query
 from tinydb.operations import delete
@@ -26,8 +27,53 @@ def index():
     return render_template('./aquarium/test.html')
 #====================================================================
 #Cross broswer demo test
-# 0 -> don't collect 1 -> start collect 
 
+testInfo = {}
+num=10
+@app.route('/test_post/nn',methods=['GET','POST'])
+def test_post():
+    global num
+    '''receive data'''
+    recv_data = request.get_data()
+    if recv_data:
+        print recv_data
+        json_re = json.loads(recv_data)
+        print json_re['email']
+        print json_re['phone']
+    else:
+        print("receive data is empty")
+ 
+    '''send data'''
+    num = num + 1
+    testInfo['name'] = 'xiaoming'
+    testInfo['age'] = num
+    return json.dumps(testInfo)
+
+@app.route('/test_post/mm',methods=['GET','POST'])
+def test_post1():
+    global num
+    '''receive data'''
+    recv_data = request.get_data()
+    if recv_data:
+        print recv_data
+        json_re = json.loads(recv_data)
+        print json_re['email']
+        print json_re['phone']
+    else:
+        print("receive data is empty")
+ 
+    '''send data'''
+    testInfo['name'] = 'xiaoming'
+    testInfo['age'] = num
+    return json.dumps(testInfo)
+
+@app.route('/senddata')
+def senddata():
+    return render_template('senddata.html')
+
+@app.route('/receivedata')
+def receivedata():
+    return render_template('receivedata.html')
 
 
 #=====================================================================start
