@@ -28,6 +28,11 @@ def index():
 #====================================================================
 #Cross broswer demo test
 
+sendpageopen = 0
+receivepaperopen = 0
+sendpre = 0
+receivepre = 0
+
 testInfo = {}
 num=10
 @app.route('/test_post/nn',methods=['GET','POST'])
@@ -67,9 +72,17 @@ def test_post1():
     testInfo['age'] = num
     return json.dumps(testInfo)
 
-@app.route('/senddata')
+@app.route('/senddatapre', methods=['GET', 'POST'])
+def senddatapre():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        return redirect(url_for('senddata',title = title))
+    return render_template('senddatapre.html')
+
+@app.route('/senddata', methods=['GET', 'POST'])
 def senddata():
-    return render_template('senddata.html')
+    title = request.args.get('title', None)
+    return render_template('senddata.html', title = title)
 
 @app.route('/receivedata')
 def receivedata():
