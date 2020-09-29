@@ -28,11 +28,10 @@ def index():
 #====================================================================
 #Cross broswer demo test
 
-sendpageopen = 0
-receivepaperopen = 0
+
 sendpre = 0
 receivepre = 0
-
+sendend = 0
 testInfo = {}
 num_receive = 10
 num_send = 10
@@ -58,6 +57,18 @@ def test_post1():
             num_send = num_send + 1
             return json.dumps(num_send)
     return json.dumps(0)
+
+@app.route('/endtosend',methods=['GET','POST'])
+def endtosend():
+    global sendend
+    sendend = 1
+    return json.dumps(0)
+
+@app.route('/endtoreceive',methods=['GET','POST'])
+def endtoreceive():
+    global sendend
+    return json.dumps(sendend)
+    
 
 @app.route('/senddatapre', methods=['GET', 'POST'])
 def senddatapre():

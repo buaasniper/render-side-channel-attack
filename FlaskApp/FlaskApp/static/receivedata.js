@@ -1734,8 +1734,10 @@ function initialize() {
 
   //initialization shujiang wu
   var startframe = 200;
+  var startcollectFlag = 0;
   var courtframe = 200;
   var recorddata;
+  var test_data = [];
   var test_data1 = [];
   var test_data2 = [];
   var test_data3 = [];
@@ -1854,6 +1856,7 @@ function initialize() {
         if (frameCount == startframe){
             var senddata = JSON.stringify(0);
             query();
+            startcollectFlag = 1;
             function query() {
                 $.ajax({
                     url: "readytocollect",
@@ -1867,8 +1870,37 @@ function initialize() {
                 })
                 
             }
+            var t1 = setInterval(waitendsignal ,1000);
+            function waitendsignal() {
+                $.ajax({
+                    url: "endtoreceive",
+                    type: "POST",
+                    data: senddata,
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        if (data == '1'){
+                            startcollectFlag = 0;
+                            console.log(test_data);
+                            console.log("end collect...........")
+                            clearInterval(t1);
+                        }
+                        
+                    }
+                })   
+            }
             console.log("ready to receive data");
         }
+        //collect data
+        if (startcollectFlag == 1){
+            console.log("start collect");
+            test_data.push(Math.round(recorddata*100)/100);
+        }
+        // if (endcollectFlag == 1){
+        //     startcollectFlag = 0;
+        //     console.log(test_data);
+        //     console.log("end collect...........")
+        // }
     }
 
 

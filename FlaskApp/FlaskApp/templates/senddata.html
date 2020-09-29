@@ -9,6 +9,7 @@
     <script>
         var senddata = JSON.stringify(0);
         var t1 = setInterval(query ,1000);
+        var data,sendnumber, t2;
         function query() {
             $.ajax({
                 url: "readytosend",
@@ -28,10 +29,32 @@
         }
       function startsend(){
         console.log("in the startsend");
-        var data = document.getElementById("message").innerHTML;
+        data = document.getElementById("message").innerHTML;
         console.log(data);
         console.log(data.length);
-       
+        sendnumber  = 0;
+        t2 = setInterval(sendmessage, 1000);
+      }
+      function sendmessage(){
+        console.log("sending --->",data[sendnumber]);
+        sendnumber++;
+        if (sendnumber == data.length){
+          clearInterval(t2);
+          closesend();
+        }
+      }
+      function closesend(){
+        var senddata = JSON.stringify(0);
+        $.ajax({
+                url: "endtosend",
+                type: "POST",
+                data: senddata,
+                dataType: "json",
+                success: function (data) {
+                    document.getElementById("content").innerHTML ="finished...";         
+                }
+            })
+
       }
  
     </script>
