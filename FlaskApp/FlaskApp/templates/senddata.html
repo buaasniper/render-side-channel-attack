@@ -1,35 +1,38 @@
 <html>
   <head></head>
   <body>
-    <h3>Booking page</h3>
+    <h3>Send page</h3>
+    <p>Message data:</p><p id = "message">{{ title }}</p>
     <div id="content"> Waiting the receive page...</div>
-    <p>
-      Seleted date: {{ title }}
-    </p>
+
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
     <script>
-        var student = {
-            email:'123456',
-            phone:'121421421',
-        };
- 
         var senddata = JSON.stringify(0);
- 
-        console.log(senddata)
-        query();
+        var t1 = setInterval(query ,1000);
         function query() {
             $.ajax({
-                url: "test_post/nn",
+                url: "readytosend",
                 type: "POST",
                 data: senddata,
                 dataType: "json",
                 success: function (data) {
                     console.log(data);
-                    document.getElementById("content").innerHTML = "Start send the message...";
+                    if (data != '0'){
+                      document.getElementById("content").innerHTML ="channel number:" + data + "\nStart send the message...";
+                      clearInterval(t1);
+                      startsend();
+                    }
+                    
                 }
-            })
-            
+            })   
         }
+      function startsend(){
+        console.log("in the startsend");
+        var data = document.getElementById("message").innerHTML;
+        console.log(data);
+        console.log(data.length);
+       
+      }
  
     </script>
   </body>

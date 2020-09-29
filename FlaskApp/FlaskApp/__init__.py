@@ -34,33 +34,30 @@ sendpre = 0
 receivepre = 0
 
 testInfo = {}
-num=10
-@app.route('/test_post/nn',methods=['GET','POST'])
-def test_post():
-    global num
-   
- 
+num_receive = 10
+num_send = 10
+@app.route('/readytocollect',methods=['GET','POST'])
+def readytocollect():
+    global num_receive
+    global receivepre
+    recv_data = request.get_data()
+    if recv_data:
+        receivepre = 1
     '''send data'''
-    num = num + 1
-    return json.dumps(num)
+    num_receive = num_receive + 1
+    return json.dumps(num_receive)
 
-@app.route('/test_post/mm',methods=['GET','POST'])
+@app.route('/readytosend',methods=['GET','POST'])
 def test_post1():
-    global num
+    global num_send
+    global receivepre
     '''receive data'''
     recv_data = request.get_data()
     if recv_data:
-        print recv_data
-        json_re = json.loads(recv_data)
-        print json_re['email']
-        print json_re['phone']
-    else:
-        print("receive data is empty")
- 
-    '''send data'''
-    testInfo['name'] = 'xiaoming'
-    testInfo['age'] = num
-    return json.dumps(testInfo)
+        if receivepre == 1:
+            num_send = num_send + 1
+            return json.dumps(num_send)
+    return json.dumps(0)
 
 @app.route('/senddatapre', methods=['GET', 'POST'])
 def senddatapre():
