@@ -1924,10 +1924,37 @@ function initialize() {
               indexLabelFontSize: 16,
           dataPoints: dps
         }]
-      });
-      
+      });    
       console.log(chart);
       chart.render();
+      analyzedata();
+    }
+    function analyzedata(){
+      let showArray = [];
+      var test_data_x = [test_data[0]];
+      for (let i = 1; i < test_data.length; i++)
+        test_data_x[i] =  test_data_x[i - 1] + test_data[i];
+      let message_lengh = Math.floor( test_data_x[test_data_x.length - 1]/ 1000) + 0.001;
+      var j = 0;
+      for (let i = 4; i <= message_lengh; i++){
+        while (test_data_x[j] < i * 1000)
+          j++;
+        let FPSsum = 0;
+        let FPSnum = 0; 
+        for (let k = j - 1; k < j + 3; k++){
+          if (k < test_data_x.length){
+            FPSsum += test_data[k];
+            FPSnum ++;
+          }
+        }
+        let aveFPS = FPSsum / FPSnum;
+        if (aveFPS > 50)
+          showArray.push(1);
+        else  
+          showArray.push(0);
+
+      } 
+      document.getElementById("content").innerHTML = "Message value:" + showArray;
     }
 
 
