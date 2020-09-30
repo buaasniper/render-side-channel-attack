@@ -58,7 +58,7 @@ a {
   	z-index: 2;
 }
 CANVAS {
-  background-color: gray;
+  /* background-color: gray; */
 }
 .fpsContainer {
   visibility: hidden;
@@ -139,9 +139,12 @@ CANVAS {
 </div>
 </div>
 <div id="content"></div>
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 
 <script>
+
     function recordTime(){
       trans_load_flag = 1;
   }

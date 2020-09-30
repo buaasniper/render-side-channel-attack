@@ -1857,6 +1857,8 @@ function initialize() {
             var senddata = JSON.stringify(0);
             query();
             startcollectFlag = 1;
+            console.log("start collect");
+            // console.log(performance.now());
             function query() {
                 $.ajax({
                     url: "readytocollect",
@@ -1883,6 +1885,7 @@ function initialize() {
                             startcollectFlag = 0;
                             console.log(test_data);
                             console.log("end collect...........")
+                            drawgraph();
                             clearInterval(t1);
                         }
                         
@@ -1893,14 +1896,36 @@ function initialize() {
         }
         //collect data
         if (startcollectFlag == 1){
-            console.log("start collect");
             test_data.push(Math.round(recorddata*100)/100);
         }
-        // if (endcollectFlag == 1){
-        //     startcollectFlag = 0;
-        //     console.log(test_data);
-        //     console.log("end collect...........")
-        // }
+    }
+    function drawgraph(){
+      var dps = [];
+      var xvalue = 0;
+      console.log(test_data.length);
+      for (let i = 0; i < test_data.length; i++){
+        xvalue += test_data[i];
+        dps.push({
+          x: xvalue,
+          y: test_data[i]
+      });
+      }
+      console.log(dps);
+      var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        theme: "light2",
+        title:{
+          text: "Simple Line Chart"
+        },
+        data: [{        
+          type: "line",
+              indexLabelFontSize: 16,
+          dataPoints: dps
+        }]
+      });
+      
+      console.log(chart);
+      chart.render();
     }
 
 
