@@ -55,6 +55,7 @@ def test_post1():
     if recv_data:
         if receivepre == 1:
             num_send = num_send + 1
+            receivepre = 0
             return json.dumps(num_send)
     return json.dumps(0)
 

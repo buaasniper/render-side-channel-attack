@@ -1900,6 +1900,8 @@ function initialize() {
         }
     }
     function drawgraph(){
+      var clearcanvas = document.getElementById("canvas");
+      clearcanvas.remove();
       var dps = [];
       var xvalue = 0;
       console.log(test_data.length);
