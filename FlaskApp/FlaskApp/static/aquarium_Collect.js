@@ -1820,46 +1820,35 @@ function initialize() {
         iframeelement[i] = document.getElementById('testiframe' + i);
       
       testWebsite.push('https://www.google.com/');
-      // testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.google.com%2F');
-      // testWebsite.push('https://www.youtube.com/');
-      testWebsite.push('http://3.15.200.178/index.php?q=https%3A%2F%2Fwww.youtube.com/');
+      testWebsite.push('https://world.taobao.com/');
       testWebsite.push('https://www.tmall.com/');
-      testWebsite.push('https://www.baidu.com/');
-      testWebsite.push('https://www.qq.com/');
-      testWebsite.push('https://www.sohu.com/');
-      // testWebsite.push('http://images.sohu.com/bill/s2017/front/tb/fsy3_tb.html#1499741353#1504158978#1506308002#1509429866#1512007848#1520310463?clkm=%2F%2Fi.go.sohu.com%2Fcount%2Fc%3Fsource%3D0%26newsid%3D%26subid%3D%26aid%3D102568555%26apid%3Dbeans_15540%26impid%3D0aa905ca05a7e22ae_0_0%26mkey%3D0aa905ca05a7e22ae_0_0%26freq%3D0%26ax%3D890%26ay%3D2975%26ed%3D%26bucket%3D%26ext%3De%253Dh08rLUsRNsgVTkgOCQ56hEWFQVv5gu9N6Mkpr6QNdUcz%252B6sB92JiQQmpiAEa88PMMLzmxQnrGLf4OSjUd5ORZvdbDXDcOaHuGsYbNO4Ywcs%252FgcYrKLXAKN7o9qjPlfcpArOh%252B%252BFgZbWGyHsNnOUtD%252Ff%252FwKRUvysGFH%252BuSAqgbMcFb3AoyW2k76fp%252F6zS2GmHJBuZ155bWpj%252FLj4%252F76LnyTwvDXOwSIGBYBRD2oip4M%252F6mGRZYLMZnF0VOnyB9%252BxGod0okgbCekAEYu7dSv9V5%252Fic%252FUuPGWRD1DHdwOYBE6ujE5zwvC6Fw3MMAKlq6pqP%252FePrNrBOscAL043QagXquoiadehtfsYaCSM2VOgZyqCO5zL2RAUOq%252BspeU0iZT2p3zryNMrh1KOp01hPH2wLoQfRzHkGPdbAGg7o0cZPo69I6cG6EAhoJecBo9%252BQ4bOg%252FVrfr8iN93fZJraBC7NF9qH7ylqsZ2eAumAWFAF%252FHgAIZIYyTzeOIIVSWsZ%252BnqchZx%252FILvCJTkcwUFa7DNSDuCvxTH8vLJso%252BMmzdtwbSJ5vheuHXPReeCKk1VIdY7%252BkCrAKKwpq0mn8AHyRoZhXY1PHpQ8SMi3%252Bkca05jce%252FqRvywju%252BegjFZ7DvHPQLhs8HxFLLAZsNwLi1bm%252BfZK3hmL6VfByBCwYlfQv%252BNC6ZxQsEzSdzY2fRcldD9wflqJ6OQGRc5b%252FuiGYCfqF8LvUB1jvl7%252BCsq4cDK%252F0iagJcMyk%252F1WPO%252BNPJ9pf%252BDERujCvLkpk8zLGYZezfsytet%252BFRPNZHdDeZ9i1xB%252B%252BjfwWtyadSG1Rjng%252FBJQzSpYJtzOfj6T2rPGLawLV94NlokR5R1kjCmfnekoiuO%252FXlORpIG%252FGCTsjRhIdzah5CEukfDyjNWjZIYWLk0K2IoxUcR7u8m6G9mm%252BTn6Vp3YSvoo0OQE%253D%2509tt2%253D1581434946282%2509turn%253D1%2509geoid1%253D1826000000%2509geoid2%253D1840000000%2509tv%255Fadx%253D%2509source%253Dshjtsybxpsyq%26uloc%3D%26turn%3D1%26sf%3D0%26newschn%3D1000000000%26pgid%3Dsohu-index%26shbd_monitor_ext%3Dc%26latcy%3D4%26position%3D%26at%3D1%26supplyid%3D1%26timestamp%3D1581434946464%26r%3D0.5232222278950798%26rsln%3D2560*1080%26smuid%3D%26suv%3D1912050242421JQH%26pagerefer%3D%26appid%3Dpcnews');
+      testWebsite.push('https://corporate.jd.com/');
+      testWebsite.push('https://zoom.us/');
+      testWebsite.push('https://vk.com/');
       testWebsite.push('https://login.tmall.com/');
-      testWebsite.push('https://www.taobao.com/');
+      testWebsite.push('https://www.yahoo.co.jp/');
       testWebsite.push('https://www.360.cn/');
-      testWebsite.push('https://www.jd.com/');
+      testWebsite.push('https://www.amazon.co.jp/');
       let position0, position1 = 0;
       let pos;
-      for (let i = 0; i < testWebsite.length; i++){
-        pos = testWebsite[i].indexOf("."); 
-        do{
-          position0 = position1;
-          position1 = pos;
-          pos = testWebsite[i].indexOf(".", pos + 1);
-        } while (pos > -1)
-        testWebsiteName.push(testWebsite[i].substring(position0+1, position1));
-      }
-      // var positions = new Array();
-      // var pos = testWebsite[0].indexOf("."); 
-      // while (pos > -1){
-      //   positions.push(pos);
-      //   pos = testWebsite[0].indexOf("e", pos + 1);
+      //old version
+      // for (let i = 0; i < testWebsite.length; i++){
+      //   pos = testWebsite[i].indexOf("."); 
+      //   do{
+      //     position0 = position1;
+      //     position1 = pos;
+      //     pos = testWebsite[i].indexOf(".", pos + 1);
+      //   } while (pos > -1)
+      //   testWebsiteName.push(testWebsite[i].substring(position0+1, position1));
       // }
-      // console.log("=====================",positions);
-      // testWebsiteName.push('Google');
-      // testWebsiteName.push('Youtube');
-      // testWebsiteName.push('Tmall');
-      // testWebsiteName.push('Baidu');
-      // testWebsiteName.push('Qq');
-      // testWebsiteName.push('Sohu');
-      // testWebsiteName.push('LoginTmall');
-      // testWebsiteName.push('Taobao');
-      // testWebsiteName.push('360');
-      // testWebsiteName.push('Jd');
+      //new version
+      for (let i = 0; i < testWebsite.length; i++){
+        let temName = testWebsite[i].split("//");
+        // console.log(temName[1].split("www").join("").split(".").join("").split("com").join("").split("cn").join("").split("/").join(""));
+        testWebsiteName.push(temName[1].split("www").join("").split(".").join("").split("com").join("").split("cn").join("").split("/").join(""));
+       
+        // testWebsiteName.push
+      }
       testWebsiteNumber = testWebsite.length;
       console.log(testWebsite);
       console.log(testWebsiteName);

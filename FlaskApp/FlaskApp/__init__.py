@@ -194,9 +194,19 @@ def test():
     return render_template('./aquarium/aquarium.html')
 
 # this is the website that collect data from single broswer
-@app.route("/collectdata")
-def collectdata():
+# history sniff collect
+# collect no cache data 
+@app.route("/collectdataNC")
+def collectdataNC():
     return render_template('./aquarium/aquarium_Collect.html')
+
+# collect already cached data
+@app.route("/collectdataAC")
+def collectdataAC():
+    return render_template('./aquarium/aquarium_Collect.html')
+
+
+#=====================================================================
 
 @app.route("/Gpu_test")
 def Gpu_test():
