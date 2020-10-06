@@ -1818,17 +1818,41 @@ function initialize() {
     if (frameCount == 10){
       for (let i = 0; i <=40; i++)
         iframeelement[i] = document.getElementById('testiframe' + i);
-      
+      /* first 10 webstie
       testWebsite.push('https://www.google.com/');
-      testWebsite.push('https://world.taobao.com/');
+      testWebsite.push('https://www.youtube.com/');
       testWebsite.push('https://www.tmall.com/');
-      testWebsite.push('https://corporate.jd.com/');
-      testWebsite.push('https://zoom.us/');
-      testWebsite.push('https://vk.com/');
-      testWebsite.push('https://login.tmall.com/');
-      testWebsite.push('https://www.yahoo.co.jp/');
+      testWebsite.push('https://www.baidu.com/');
+      testWebsite.push('https://www.qq.com/');
+      testWebsite.push('https://www.facebook.com/');
+      testWebsite.push('https://www.sohu.com/');
+      testWebsite.push('https://world.taobao.com/');
       testWebsite.push('https://www.360.cn/');
-      testWebsite.push('https://www.amazon.co.jp/');
+      testWebsite.push('https://www.yahoo.com/');
+      */
+      /*
+     testWebsite.push('https://www.amazon.com/');
+     testWebsite.push('https://corporate.jd.com/');
+     testWebsite.push('https://www.wikipedia.org');
+     testWebsite.push('https://www.sina.com.cn/');
+     testWebsite.push('https://weibo.com/');
+     testWebsite.push('https://zoom.us/signin');
+     testWebsite.push('https://www.reddit.com/');
+     testWebsite.push('https://outlook.live.com/');
+     testWebsite.push('https://www.netflix.com/');
+     testWebsite.push('http://xinhuanet.com/');
+     */
+    testWebsite.push('https://www.baidu.com/');
+    testWebsite.push('https://www.okezone.com/');
+    testWebsite.push('https://vk.com/');
+    testWebsite.push('https://www.microsoft.com/');
+    testWebsite.push('https://www.instagram.com/');
+    testWebsite.push('https://www.alipay.com/');
+    testWebsite.push('https://www.csdn.net/');
+    testWebsite.push('http://myshopify.com/');
+    testWebsite.push('https://www.yahoo.co.jp/');
+    testWebsite.push('https://login.live.com/');
+
       let position0, position1 = 0;
       let pos;
       //old version
