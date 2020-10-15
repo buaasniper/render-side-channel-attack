@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, url_for, redirect
+from flask import Flask, render_template, request, jsonify, url_for, redirect, session
 import os,sys
 import time
 import csv
@@ -19,7 +19,9 @@ import matplotlib.pyplot as plt
 
 db = TinyDB('/home/ubuntu/Sites/FlaskApp/FlaskApp/db.json')
 '''
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'testdemo'
 # CORS(app)
 
 @app.route("/")
@@ -41,8 +43,11 @@ def readytocollect():
     global receivepre
     recv_data = request.get_data()
     if recv_data:
-        receivepre = 1
+        f= open("/home/ubuntu/Sites/FlaskApp/FlaskApp/flag.txt","w+")
+        f.write("1")
+        f.close()
     '''send data'''
+    print ('already receive and change',receivepre, session.get('receivepre'))
     num_receive = num_receive + 1
     return json.dumps(num_receive)
 
@@ -51,9 +56,14 @@ def test_post1():
     global num_send
     global receivepre
     '''receive data'''
+    # print ('ready to send', receivepre, session.get('receivepre'))
     recv_data = request.get_data()
+    f = open("/home/ubuntu/Sites/FlaskApp/FlaskApp/flag.txt","r+")
+    flag = f.readline()
+    # print('ready to send',flag)
+    f.close()
     if recv_data:
-        if receivepre == 1:
+        if flag == '1':
             num_send = num_send + 1
             receivepre = 0
             return json.dumps(num_send)
@@ -62,13 +72,20 @@ def test_post1():
 @app.route('/endtosend',methods=['GET','POST'])
 def endtosend():
     global sendend
-    sendend = 1
+    f= open("/home/ubuntu/Sites/FlaskApp/FlaskApp/flag.txt","r+")
+    f.truncate(0)
+    f.write("2")
+    f.close()
     return json.dumps(0)
 
 @app.route('/endtoreceive',methods=['GET','POST'])
 def endtoreceive():
     global sendend
-    return json.dumps(sendend)
+    f = open("/home/ubuntu/Sites/FlaskApp/FlaskApp/flag.txt","r+")
+    flag = f.readline()
+    # print('ready to send',flag)
+    f.close()
+    return json.dumps(flag)
     
 
 @app.route('/senddatapre', methods=['GET', 'POST'])
@@ -81,10 +98,18 @@ def senddatapre():
 @app.route('/senddata', methods=['GET', 'POST'])
 def senddata():
     title = request.args.get('title', None)
+    f= open("/home/ubuntu/Sites/FlaskApp/FlaskApp/flag.txt","r+")
+    f.truncate(0)
+    f.write("0")
+    f.close()
     return render_template('senddata.html', title = title)
 
 @app.route('/receivedata')
 def receivedata():
+    f= open("/home/ubuntu/Sites/FlaskApp/FlaskApp/flag.txt","r+")
+    f.truncate(0)
+    f.write("0")
+    f.close()
     return render_template('receivedata.html')
 
 
@@ -228,6 +253,10 @@ def NoCahced():
 @app.route("/adjust")
 def adjust ():
     return render_template('./aquarium/adjust.html')
+
+@app.route("/collectdemo")
+def collectdemo ():
+    return render_template('./collectdemo.html')
 
 
 @app.route('/server_test_Gpu',methods=['POST'])

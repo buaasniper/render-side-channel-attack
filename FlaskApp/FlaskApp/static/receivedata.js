@@ -882,7 +882,11 @@ function setSetting(elem, id) {
 function main() {
   math = tdl.math;
   fast = tdl.fast;
-  canvas = document.getElementById("canvas");
+
+  // canvas = document.getElementById("canvas");
+  canvas = document.createElement("CANVAS");
+  canvas.width = 1024;
+  canvas.height = 1024; 
 
   //canvas = WebGLDebugUtils.makeLostContextSimulatingCanvas(canvas);
   // tell the simulator when to lose context.
@@ -1867,7 +1871,7 @@ function initialize() {
                     dataType: "json",
                     success: function (data) {
                         console.log(data);
-                        document.getElementById("content").innerHTML = "channel number:" + data;
+                        document.getElementById("content").innerHTML = "channel number:" + data + "start receive data ...";
                     }
                 })
                 
@@ -1880,8 +1884,8 @@ function initialize() {
                     data: senddata,
                     dataType: "json",
                     success: function (data) {
-                        console.log(data);
-                        if (data == '1'){
+                        console.log("waitendsignal",data);
+                        if (data == '2'){
                             startcollectFlag = 0;
                             console.log(test_data);
                             console.log("end collect...........")
@@ -1900,17 +1904,29 @@ function initialize() {
         }
     }
     function drawgraph(){
-      var clearcanvas = document.getElementById("canvas");
+      var clearcanvas = canvas;
       clearcanvas.remove();
       var dps = [];
       var xvalue = 0;
       console.log(test_data.length);
       for (let i = 0; i < test_data.length; i++){
         xvalue += test_data[i];
-        dps.push({
-          x: xvalue,
-          y: test_data[i]
-      });
+        if (i < 10)
+          dps.push({
+            x: xvalue,
+            y: test_data[i]
+        });
+        else{
+          let sum = 0;
+          for (let j = i - 9; j <=i;j++)
+            sum += test_data[j];
+            dps.push({
+              x: xvalue,
+              y: sum /10.0
+          });
+        }
+
+
       }
       console.log(dps);
       var chart = new CanvasJS.Chart("chartContainer", {

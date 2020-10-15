@@ -1884,6 +1884,7 @@ function initialize() {
     /**********************************************************************************************/
     //adjust workload
     var aveAdjustArray;
+    // tem change 
     const Average = arr => arr.reduce((acc, val) => acc + val, 0) / arr.length;
     if (frameCount == 10)
       g_numFishNumber = 5;
@@ -1902,8 +1903,13 @@ function initialize() {
         if ((aveAdjustArray > 25) && (aveAdjustArray < 33) || (g_numFishNumber == 0)){
           startCollectFrame = frameCount;
           startframe = startCollectFrame + 100;
-          trans_load_flag = 0;
-          trans_state = 0;
+          //tem change 
+          // trans_load_flag = 0;
+          // trans_state = 0;
+          trans_load_flag = 100;
+          trans_state = 100;
+          console.log("tem _ Collect data");
+
         }
           
         else if (aveAdjustArray > 28)
@@ -1917,155 +1923,165 @@ function initialize() {
       }
     }
 
+    else{
+      if ((frameCount > startframe + 200) && (frameCount < startframe + 300)){
+        test_data1.push(Math.round(recorddata*100)/100);
+        if (test_data1.length == 99)
+          console.log(test_data1);
+      }
 
-    else if (testWebsiteID < testWebsite.length){
+    }
 
-
-          // console.log("in the state part");
-          // console.log("trans_load_flag",trans_load_flag);
-          // console.log("trans_state",trans_state);
-          /**********************************************************************************************/
-
-          /**********************************************************************************************/
-          // record the data
-          //0->1 2->3 4->5 6->7
-          if ((trans_load_flag == 1)){
-            trans_state += 1;
-            trans_load_flag = 0;
-            // startframe = frameCount;
-          }
-          if (frameCount - startframe > 2000){
-            startframe = frameCount;
-            trans_state += 1;
-            trans_load_flag = 0;
-          }
-
-          var iframe_line = testWebsite[testWebsiteID];
-          // if (frameCount == startframe){
-          if (trans_state == 0){
-            console.log("4 * testWebsiteID + 1",4 * testWebsiteID + 1);
-            console.log(iframeelement[4 * testWebsiteID + 1]);
-            iframeelement[4 * testWebsiteID + 1].src = iframe_line;
-            // trans_load_flag = 0;
-            trans_state += 1;
-            // console.log("change the src");
-            startframe = frameCount;
-          }
-
-          // if (frameCount == startframe + courtframe - 10){
-          if (trans_state == 2){
-            iframeelement[4 * testWebsiteID + 1].parentNode.removeChild(iframeelement[4 * testWebsiteID + 1]);
-            // trans_load_flag = 0;
-          }
-
-          if (trans_state == 3){
-          // if (frameCount == startframe + courtframe){
-            iframeelement[4 * testWebsiteID + 2].src = iframe_line;
-            // trans_load_flag = 0;
-            trans_state += 1;
-            startframe = frameCount;
-          }
-
-          if (trans_state == 5){
-          // if (frameCount == startframe + courtframe * 2 - 10){
-            iframeelement[4 * testWebsiteID + 2].parentNode.removeChild(iframeelement[4 * testWebsiteID + 2]);
-            // trans_load_flag = 0;
-          }
-
-          if (trans_state == 6){
-          // if (frameCount == startframe + courtframe * 2){  
-            iframeelement[4 * testWebsiteID + 3].src = iframe_line;
-            // trans_load_flag = 0;
-            trans_state += 1;
-            startframe = frameCount;
-          }
-
-          if (trans_state == 8){
-          // if (frameCount == startframe + courtframe * 3 - 10){
-            iframeelement[4 * testWebsiteID + 3].parentNode.removeChild(iframeelement[4 * testWebsiteID + 3]);
-          }
-
-          if (trans_state == 9){
-          // if (frameCount == startframe + courtframe * 3){  
-            iframeelement[4 * testWebsiteID + 4].src = iframe_line;
-            // trans_load_flag = 0;
-            trans_state += 1;
-            startframe = frameCount;
-          }
-
-          if (trans_state == 11){
-          // if (frameCount == startframe + courtframe * 4 - 10){
-            iframeelement[4 * testWebsiteID + 4].parentNode.removeChild(iframeelement[4 * testWebsiteID + 4]);
-          }
-
-          if (trans_state == 1){
-            test_data1.push(Math.round(recorddata*100)/100);
-          }
-          if (trans_state == 4){
-            test_data2.push(Math.round(recorddata*100)/100);
-          }
-          if (trans_state == 7){
-            test_data3.push(Math.round(recorddata*100)/100);
-          }
-          if (trans_state == 10){
-            test_data4.push(Math.round(recorddata*100)/100);
-          }
-
-          if (trans_state % 3 == 2)
-            trans_state += 1;
+    // else if (testWebsiteID < testWebsite.length){
 
 
-          // if (trans_load_flag == 0){
-          //   if ((frameCount > startframe) && (frameCount <= (startframe + courtframe - 10))){
-          //     test_data1.push(Math.round(recorddata*100)/100);
-          //   }
-          //   if ((frameCount > startframe + courtframe) && (frameCount <= (startframe + courtframe * 2 - 10))){
-          //     test_data2.push(Math.round(recorddata*100)/100);
-          //   }
-          //   if ((frameCount > startframe + courtframe * 2) && (frameCount <= (startframe + courtframe * 3 - 10))){
-          //     test_data3.push(Math.round(recorddata*100)/100);
-          //   }
-          //   if ((frameCount > startframe + courtframe * 3) && (frameCount <= (startframe + courtframe * 4 - 10))){
-          //     test_data4.push(Math.round(recorddata*100)/100);
-          //   }
-          // }
+
+    //       // console.log("in the state part");
+    //       // console.log("trans_load_flag",trans_load_flag);
+    //       // console.log("trans_state",trans_state);
+    //       /**********************************************************************************************/
+
+    //       /**********************************************************************************************/
+    //       // record the data
+    //       //0->1 2->3 4->5 6->7
+    //       if ((trans_load_flag == 1)){
+    //         trans_state += 1;
+    //         trans_load_flag = 0;
+    //         // startframe = frameCount;
+    //       }
+    //       if (frameCount - startframe > 2000){
+    //         startframe = frameCount;
+    //         trans_state += 1;
+    //         trans_load_flag = 0;
+    //       } 
+
+    //       var iframe_line = testWebsite[testWebsiteID];
+    //       // if (frameCount == startframe){
+    //       if (trans_state == 0){
+    //         console.log("4 * testWebsiteID + 1",4 * testWebsiteID + 1);
+    //         console.log(iframeelement[4 * testWebsiteID + 1]);
+    //         iframeelement[4 * testWebsiteID + 1].src = iframe_line;
+    //         // trans_load_flag = 0;
+    //         trans_state += 1;
+    //         // console.log("change the src");-
+    //         startframe = frameCount;
+    //       }
+
+    //       // if (frameCount == startframe + courtframe - 10){
+    //       if (trans_state == 2){
+    //         iframeelement[4 * testWebsiteID + 1].parentNode.removeChild(iframeelement[4 * testWebsiteID + 1]);
+    //         // trans_load_flag = 0;
+    //       }
+
+    //       if (trans_state == 3){
+    //       // if (frameCount == startframe + courtframe){
+    //         iframeelement[4 * testWebsiteID + 2].src = iframe_line;
+    //         // trans_load_flag = 0;
+    //         trans_state += 1;
+    //         startframe = frameCount;
+    //       }
+
+    //       if (trans_state == 5){
+    //       // if (frameCount == startframe + courtframe * 2 - 10){
+    //         iframeelement[4 * testWebsiteID + 2].parentNode.removeChild(iframeelement[4 * testWebsiteID + 2]);
+    //         // trans_load_flag = 0;
+    //       }
+
+    //       if (trans_state == 6){
+    //       // if (frameCount == startframe + courtframe * 2){  
+    //         iframeelement[4 * testWebsiteID + 3].src = iframe_line;
+    //         // trans_load_flag = 0;
+    //         trans_state += 1;
+    //         startframe = frameCount;
+    //       }
+
+    //       if (trans_state == 8){
+    //       // if (frameCount == startframe + courtframe * 3 - 10){
+    //         iframeelement[4 * testWebsiteID + 3].parentNode.removeChild(iframeelement[4 * testWebsiteID + 3]);
+    //       }
+
+    //       if (trans_state == 9){
+    //       // if (frameCount == startframe + courtframe * 3){  
+    //         iframeelement[4 * testWebsiteID + 4].src = iframe_line;
+    //         // trans_load_flag = 0;
+    //         trans_state += 1;
+    //         startframe = frameCount;
+    //       }
+
+    //       if (trans_state == 11){
+    //       // if (frameCount == startframe + courtframe * 4 - 10){
+    //         iframeelement[4 * testWebsiteID + 4].parentNode.removeChild(iframeelement[4 * testWebsiteID + 4]);
+    //       }
+
+    //       if (trans_state == 1){
+    //         test_data1.push(Math.round(recorddata*100)/100);
+    //       }
+    //       if (trans_state == 4){
+    //         test_data2.push(Math.round(recorddata*100)/100);
+    //       }
+    //       if (trans_state == 7){
+    //         test_data3.push(Math.round(recorddata*100)/100);
+    //       }
+    //       if (trans_state == 10){
+    //         test_data4.push(Math.round(recorddata*100)/100);
+    //       }
+
+    //       if (trans_state % 3 == 2)
+    //         trans_state += 1;
+
+
+    //       // if (trans_load_flag == 0){
+    //       //   if ((frameCount > startframe) && (frameCount <= (startframe + courtframe - 10))){
+    //       //     test_data1.push(Math.round(recorddata*100)/100);
+    //       //   }
+    //       //   if ((frameCount > startframe + courtframe) && (frameCount <= (startframe + courtframe * 2 - 10))){
+    //       //     test_data2.push(Math.round(recorddata*100)/100);
+    //       //   }
+    //       //   if ((frameCount > startframe + courtframe * 2) && (frameCount <= (startframe + courtframe * 3 - 10))){
+    //       //     test_data3.push(Math.round(recorddata*100)/100);
+    //       //   }
+    //       //   if ((frameCount > startframe + courtframe * 3) && (frameCount <= (startframe + courtframe * 4 - 10))){
+    //       //     test_data4.push(Math.round(recorddata*100)/100);
+    //       //   }
+    //       // }
           
 
 
 
-          /**********************************************************************************************/
-          //post data
-          // if (frameCount == (startframe + courtframe * 4 - 10)){ 
-          if (trans_state == 12){  
-            //reset
-            trans_state = 0;
-            let sendData = [];
-            sendData.push(test_data1,test_data2,test_data3,test_data4);
-            testData.push(sendData)
-            test_data1 = [];
-            test_data2 = [];
-            test_data3 = [];
-            test_data4 = [];
-            startframe = frameCount + 10;
-            testWebsiteID ++;
-            console.log("sendData",sendData);
-            console.log("post_data5",testWebsiteName[testWebsiteID - 1])
-            console.log("testWebsiteID",testWebsiteID);
-            console.log("testWebsiteName.lenght",testWebsiteName.length);
-            // if (testWebsiteID == testWebsiteName.length)
-            //   analyzeFlag = 1;
-            // console.log("analyzeFlag",analyzeFlag);
-            // $.post("/server_test",{"post_data1":sendData[0], "post_data2":sendData[1],"post_data3":sendData[2],"post_data4":sendData[3], "post_data5":testWebsiteName[testWebsiteID - 1]},function(data,status)
-            // {
-            //     console.log("sent");
-            //     var tmp = data;            
-            //     console.log(data.otstr);  
-            //     console.log("v1");                   
-            // });  
+    //       /**********************************************************************************************/
+    //       //post data
+    //       // if (frameCount == (startframe + courtframe * 4 - 10)){ 
+    //       if (trans_state == 12){  
+    //         //reset
+    //         trans_state = 0;
+    //         let sendData = [];
+    //         sendData.push(test_data1,test_data2,test_data3,test_data4);
+    //         testData.push(sendData)
+    //         test_data1 = [];
+    //         test_data2 = [];
+    //         test_data3 = [];
+    //         test_data4 = [];
+    //         startframe = frameCount + 10;
+    //         testWebsiteID ++;
+    //         console.log("sendData",sendData);
+    //         console.log("post_data5",testWebsiteName[testWebsiteID - 1])
+    //         console.log("testWebsiteID",testWebsiteID);
+    //         console.log("testWebsiteName.lenght",testWebsiteName.length);
+    //         // if (testWebsiteID == testWebsiteName.length)
+    //         //   analyzeFlag = 1;
+    //         // console.log("analyzeFlag",analyzeFlag);
+    //         // $.post("/server_test",{"post_data1":sendData[0], "post_data2":sendData[1],"post_data3":sendData[2],"post_data4":sendData[3], "post_data5":testWebsiteName[testWebsiteID - 1]},function(data,status)
+    //         // {
+    //         //     console.log("sent");
+    //         //     var tmp = data;            
+    //         //     console.log(data.otstr);  
+    //         //     console.log("v1");                   
+    //         // });  
 
-          } 
+    //       } 
 
-    }
+    // }
+    
 
 
     /**********************************************************************************************/
