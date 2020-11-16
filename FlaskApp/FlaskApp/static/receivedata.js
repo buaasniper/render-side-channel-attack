@@ -1740,6 +1740,7 @@ function initialize() {
   var startframe = 200;
   var startcollectFlag = 0;
   var courtframe = 200;
+  var endcollectframe = -100;
   var recorddata;
   var test_data = [];
   var test_data1 = [];
@@ -1759,6 +1760,7 @@ function initialize() {
   var testDataArray = [];
   var trans_state = 0;
   var collectData = [];
+  var ave_data = [];
 
   
   function onAnimationFrame() {
@@ -1886,10 +1888,7 @@ function initialize() {
                     success: function (data) {
                         console.log("waitendsignal",data);
                         if (data == '2'){
-                            startcollectFlag = 0;
-                            console.log(test_data);
-                            console.log("end collect...........")
-                            drawgraph();
+                            endcollectframe = frameCount + 80;
                             clearInterval(t1);
                         }
                         
@@ -1902,8 +1901,15 @@ function initialize() {
         if (startcollectFlag == 1){
             test_data.push(Math.round(recorddata*100)/100);
         }
+        if (frameCount == endcollectframe){
+          drawgraph();
+        }
     }
+    
     function drawgraph(){
+      startcollectFlag = 0;
+      console.log(test_data);
+      console.log("end collect...........");
       var clearcanvas = canvas;
       clearcanvas.remove();
       var dps = [];
@@ -1911,19 +1917,22 @@ function initialize() {
       console.log(test_data.length);
       for (let i = 0; i < test_data.length; i++){
         xvalue += test_data[i];
-        if (i < 10)
+        if (i < 10){
           dps.push({
             x: xvalue,
             y: test_data[i]
         });
+          ave_data.push(test_data[i]);
+        }
         else{
           let sum = 0;
-          for (let j = i - 9; j <=i;j++)
+          for (let j = i - 4; j <=i;j++)
             sum += test_data[j];
             dps.push({
               x: xvalue,
-              y: sum /10.0
+              y: sum /5.0
           });
+          ave_data.push( sum /5.0);
         }
 
 
@@ -1933,7 +1942,7 @@ function initialize() {
         animationEnabled: true,
         theme: "light2",
         title:{
-          text: "Simple Line Chart"
+          text: "FPS LINE"
         },
         data: [{        
           type: "line",
@@ -1945,32 +1954,130 @@ function initialize() {
       chart.render();
       analyzedata();
     }
+
     function analyzedata(){
+      //version 1
+      // let showArray = [];
+      // var test_data_x = [test_data[0]];
+      // for (let i = 1; i < test_data.length; i++)
+      //   test_data_x[i] =  test_data_x[i - 1] + test_data[i];
+      // let message_lengh = Math.floor( test_data_x[test_data_x.length - 1]/ 1000) + 0.001;
+      // var j = 0;
+      // for (let i = 4; i <= message_lengh; i++){
+      //   while (test_data_x[j] < i * 1000)
+      //     j++;
+      //   let FPSsum = 0;
+      //   let FPSnum = 0; 
+      //   for (let k = j - 1; k < j + 3; k++){
+      //     if (k < test_data_x.length){
+      //       FPSsum += test_data[k];
+      //       FPSnum ++;
+      //     }
+      //   }
+      //   let aveFPS = FPSsum / FPSnum;
+      //   if (aveFPS > 50)
+      //     showArray.push(1);
+      //   else  
+      //     showArray.push(0);
+
+      // } 
+
+      //version 2
+      //find average value
+      var ave_value = 0;
+      for (let i = 30; i < 50; i++)
+        ave_value += ave_data[i];
+      ave_value = ave_value / 20;
+      var test_data_x = [ave_data[0]];
+      for (let i = 1; i < ave_data.length; i++)
+        test_data_x[i] =  test_data_x[i - 1] + ave_data[i];
+      let i = 50;
+      while (ave_data[i] < ave_value * 1.5)
+        i++;
+      let ShowString = '';
+      let startCollectTime = test_data_x[i];
+      let message_lengh = Math.floor( (test_data_x[test_data_x.length - 1] - startCollectTime)/ 2000);
+      ShowString = 'startCollectTime:' + startCollectTime + '<br/>';
+      ShowString += 'endCollectTime:' + test_data_x[test_data_x.length - 1] + '<br/>';
+      ShowString += 'messageLength:' + (message_lengh - 3) + '<br/>';
+      console.log(message_lengh);
+      console.log(startCollectTime);
+      console.log(startCollectTime + message_lengh * 2000 + 200);
+
+      let message_letter = 1;
+      var temArray = [];
       let showArray = [];
-      var test_data_x = [test_data[0]];
-      for (let i = 1; i < test_data.length; i++)
-        test_data_x[i] =  test_data_x[i - 1] + test_data[i];
-      let message_lengh = Math.floor( test_data_x[test_data_x.length - 1]/ 1000) + 0.001;
-      var j = 0;
-      for (let i = 4; i <= message_lengh; i++){
-        while (test_data_x[j] < i * 1000)
-          j++;
-        let FPSsum = 0;
-        let FPSnum = 0; 
-        for (let k = j - 1; k < j + 3; k++){
-          if (k < test_data_x.length){
-            FPSsum += test_data[k];
-            FPSnum ++;
+      let DTW0 = [];
+      let DTW1 = [];
+      let DTWArray = [];
+      for (let i = 0;test_data_x[i] < startCollectTime + message_lengh * 2000 + 200;i++){
+        if ((test_data_x[i] >= message_letter * 2000) && (test_data_x[i] < (message_letter + 1) * 2000))
+          temArray.push(ave_data[i]);
+        if (test_data_x[i] >= (message_letter + 1) * 2000){
+          message_letter++;
+          if (message_letter == 3)
+            DTW1 = temArray;
+          if (message_letter == 4)
+            DTW0 = temArray;
+          if (message_letter >= 5){
+            if (DTW(temArray, DTW1) > DTW(temArray, DTW0))
+              DTWArray.push(0);
+            else
+              DTWArray.push(1);
+          }
+          let highValue = 0;
+          for (let j = 0; j < temArray.length; j++)
+            if (temArray[j] > ave_value * 1.5)
+              highValue ++;
+          temArray = [];
+          showArray.push(highValue);
+          console.log(test_data_x[i]);
+          console.log(message_letter);
+        }
+      }
+      // console.log(showArray);
+      // let final_value = [];
+      // let detect_value = (showArray[0] + showArray[1]) / 4;
+      // console.log(detect_value);
+      // for (let i = 3; i < showArray.length; i++)
+      //   console.log(showArray[i]);
+      //   if (showArray[i] > detect_value)
+      //     final_value.push(1);
+      //   else
+      //     final_value.push(0);
+      document.getElementById("content").innerHTML =ShowString + 'DTW:' + DTWArray;
+    }
+
+    function DTW(Q, C){
+      var m = Q.length;
+      var n = C.length;
+      // console.log("Q", Q);
+      // console.log("C", C);
+      var distanceMap = [];
+      var DTWMap = [];
+      for (let j = 0; j < n; j++){
+        var temAttay = [];
+        for (let i = 0; i < m; i++){
+          let temDistance = Math.abs(Q[i] - C[j]) * (Math.abs(i - j) + 1);
+          temAttay.push(temDistance);
+        }
+        distanceMap.push(temAttay);
+        DTWMap.push(temAttay);
+      }
+      // console.log("distanceMap", distanceMap);
+      for (let j = 0; j < n; j++){
+        for (let i = 0; i < m; i++){
+          if ((i != 0) && (j != 0)){
+            let value1 = DTWMap[j-1][i] + distanceMap[j][i];
+            let value2 = DTWMap[j][i-1] + distanceMap[j][i];
+            let value3 = DTWMap[j-1][i-1] + distanceMap[j][i] * 2;
+            DTWMap[j][i] = Math.min(value1, value2, value3);
           }
         }
-        let aveFPS = FPSsum / FPSnum;
-        if (aveFPS > 50)
-          showArray.push(1);
-        else  
-          showArray.push(0);
+      }
+      // console.log("DTWMap", DTWMap);
+      return (DTWMap[n-1][m-1]);
 
-      } 
-      document.getElementById("content").innerHTML = "Message value:" + showArray;
     }
 
 

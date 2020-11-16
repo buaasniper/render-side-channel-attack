@@ -7,9 +7,9 @@
     <div id="content"> Waiting the receive page...</div>
     <div>
       <iframe id = "testiframe0" src = "{{url_for('iframe')}}" height = "800px" width = "800px" > </iframe>
-      <iframe id = "testiframe1" src = "{{url_for('iframe')}}" height = "800px" width = "800px"> </iframe> 
+      <!-- <iframe id = "testiframe1" src = "{{url_for('iframe')}}" height = "800px" width = "800px"> </iframe> 
       <iframe id = "testiframe2" src = "{{url_for('iframe')}}" height = "800px" width = "800px"> </iframe>
-      <iframe id = "testiframe3" src = "{{url_for('iframe')}}" height = "800px" width = "800px" > </iframe>
+      <iframe id = "testiframe3" src = "{{url_for('iframe')}}" height = "800px" width = "800px" > </iframe> -->
     </div>
 
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
@@ -44,13 +44,17 @@
         console.log(data);
         console.log(data.length);
         // console.log(performance.now());
-        sendnumber  = -2;
-        t2 = setInterval(sendmessage, 4000);
+        sendnumber  = -3;
+        t2 = setInterval(sendmessage, 2000);
       }
       function sendmessage(){
-        if ((sendnumber >= 0) && (data[sendnumber] == '0')){iframeelement[0].src = "{{url_for('iframe')}}";}
+        if (sendnumber == -1){
+          for (let i = 0; i <= 0; i++)
+          iframeelement[0].src = "{{url_for('iframe')}}";
+        }
+        else if ((sendnumber >= 0) && (data[sendnumber] == '0')){iframeelement[0].src = "{{url_for('iframe')}}";}
         else{
-        for (let i = 0; i <= 3; i++)
+        for (let i = 0; i <= 0; i++)
           iframeelement[i].src = "https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&mute=1";
         }
         console.log("sending --->",data[sendnumber]);
